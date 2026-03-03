@@ -7,9 +7,9 @@
 
 A charting library for [Typst](https://typst.app) built entirely with native primitives (`rect`, `circle`, `line`, `polygon`, `place`). No external dependencies required.
 
-## Showcase
+## Gallery
 
-All 50 chart types across 6 pages:
+All 50 chart types across 6 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
 
 ![Showcase Page 1](screenshots/showcase-1.png)
 ![Showcase Page 2](screenshots/showcase-2.png)
@@ -18,9 +18,26 @@ All 50 chart types across 6 pages:
 ![Showcase Page 5](screenshots/showcase-5.png)
 ![Showcase Page 6](screenshots/showcase-6.png)
 
+## Examples
+
+| File | Description |
+|---|---|
+| [`examples/showcase.typ`](examples/showcase.typ) | Compact 6-page showcase of all 50 chart types (dark theme) |
+| [`examples/demo.typ`](examples/demo.typ) | Comprehensive 18-page demo with all features, themes, and data loading |
+
+Sample data files used by the demo:
+- [`data/characters.json`](data/characters.json) — RPG character stats
+- [`data/events.json`](data/events.json) — Conference/event data
+- [`data/analytics.json`](data/analytics.json) — Dashboard analytics data
+
+```bash
+typst compile --root . examples/showcase.typ
+typst compile --root . examples/demo.typ
+```
+
 ## Features
 
-- **38 chart types** for data visualization
+- **50 chart types** for data visualization
 - **JSON data input** - load data directly from JSON files
 - **Theme system** - preset themes and custom overrides for consistent styling
 - **Customizable** - colors, sizes, labels, legends
@@ -118,7 +135,7 @@ Overlay reference lines, bands, and labels on bar, line, and scatter charts:
 ### Package
 
 ```typst
-#import "@preview/primaviz:0.1.0": *
+#import "@preview/primaviz:0.1.1": *
 ```
 
 ### Local
@@ -244,21 +261,6 @@ Pass a dictionary with only the keys you want to change. Unspecified keys fall b
     (7, 8, 9),
   ),
 )
-```
-
-## Examples
-
-- `examples/showcase.typ` - Compact 4-page showcase of all 38 chart types
-- `examples/demo.typ` - Comprehensive 18-page demo with all features
-
-Sample data files in `data/`:
-- `data/characters.json` - RPG character data
-- `data/events.json` - Conference/event data
-- `data/analytics.json` - Dashboard analytics data
-
-```bash
-typst compile --root . examples/demo.typ
-typst compile --root . examples/showcase.typ
 ```
 
 ## Color Palette

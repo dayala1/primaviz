@@ -1,4 +1,5 @@
 // Chart Demo - Comprehensive showcase of all chart types
+// Package users: #import "@preview/primaviz:0.1.1": *
 #import "../src/lib.typ": *
 
 #set page(margin: 1cm)
