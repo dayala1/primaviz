@@ -30,12 +30,8 @@
   theme: none,
 ) = {
   validate-boxplot-data(data, "box-plot")
-  let t = resolve-theme(theme)
-
-  // Apply show-grid override
-  if show-grid != auto {
-    t.insert("show-grid", show-grid)
-  }
+  let grid-overrides = if show-grid != auto { (show-grid: show-grid) } else { none }
+  let t = resolve-theme(theme, overrides: grid-overrides)
 
   let labels = data.labels
   let boxes = data.boxes
