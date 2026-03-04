@@ -8,7 +8,7 @@
 #import "charts/area.typ": area-chart, stacked-area-chart
 #import "charts/pie.typ": pie-chart
 #import "charts/radar.typ": radar-chart
-#import "charts/scatter.typ": scatter-plot, multi-scatter-plot, bubble-chart
+#import "charts/scatter.typ": scatter-plot, multi-scatter-plot, bubble-chart, multi-bubble-chart
 #import "charts/gauge.typ": gauge-chart, progress-bar, circular-progress, progress-bars
 #import "charts/rings.typ": ring-progress
 #import "charts/heatmap.typ": heatmap, calendar-heatmap, correlation-matrix

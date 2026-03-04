@@ -302,6 +302,17 @@
   }
 }
 
+// Validate multi-bubble data (series of (x, y, size) points)
+#let validate-multi-bubble-data(data, chart-name) = {
+  validate-multi-scatter-data(data, chart-name)
+  for (i, s) in data.series.enumerate() {
+    for (j, pt) in s.points.enumerate() {
+      assert(pt.len() >= 3,
+        message: chart-name + ": series '" + s.name + "' point[" + str(j) + "] must have at least 3 elements (x, y, size)")
+    }
+  }
+}
+
 // Validate violin data (labels + datasets of raw observations)
 #let validate-violin-data(data, chart-name) = {
   assert(type(data) == dictionary, message: chart-name + ": data must be a dictionary")

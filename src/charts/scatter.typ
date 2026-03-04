@@ -1,7 +1,7 @@
 // scatter.typ - Scatter plot and bubble chart
 #import "../theme.typ": resolve-theme, get-color
 #import "../util.typ": nonzero
-#import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data
+#import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data, validate-multi-bubble-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
 #import "../primitives/legend.typ": draw-legend-auto
@@ -310,5 +310,112 @@
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
+  ]
+}
+
+/// Renders a multi-series bubble chart with color-coded point groups and
+/// per-point size dimension.
+///
+/// - data (dictionary): Dict with `series` array, each containing `name` and
+///   `points` (array of `(x, y, size)` tuples)
+/// - width (length): Chart width
+/// - height (length): Chart height
+/// - title (none, content): Optional chart title
+/// - x-label (none, content): X-axis title
+/// - y-label (none, content): Y-axis title
+/// - min-radius (length): Minimum bubble radius
+/// - max-radius (length): Maximum bubble radius
+/// - show-grid (bool): Draw background grid lines
+/// - show-legend (bool): Show series legend
+/// - theme (none, dictionary): Theme overrides
+/// -> content
+#let multi-bubble-chart(
+  data,
+  width: 350pt,
+  height: 250pt,
+  title: none,
+  x-label: none,
+  y-label: none,
+  min-radius: 4pt,
+  max-radius: 25pt,
+  show-grid: true,
+  show-legend: true,
+  theme: none,
+) = {
+  validate-multi-bubble-data(data, "multi-bubble-chart")
+  let t = resolve-theme(theme)
+  let series = data.series
+
+  // Collect all x, y, size values across all series for axis/size scaling
+  let x-vals = ()
+  let y-vals = ()
+  let size-vals = ()
+  for s in series {
+    for pt in s.points {
+      x-vals.push(pt.at(0))
+      y-vals.push(pt.at(1))
+      size-vals.push(pt.at(2))
+    }
+  }
+
+  let x-min = calc.min(..x-vals)
+  let x-max = calc.max(..x-vals)
+  let y-min = calc.min(..y-vals)
+  let y-max = calc.max(..y-vals)
+  let size-min = calc.min(..size-vals)
+  let size-max = calc.max(..size-vals)
+
+  let x-range = nonzero(x-max - x-min)
+  let y-range = nonzero(y-max - y-min)
+  let size-range = nonzero(size-max - size-min)
+
+  let cl = cartesian-layout(width, height, t, extra-left: 10pt)
+
+  chart-container(width, height, title, t, extra-height: 50pt)[
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
+
+    #box(width: width, height: height)[
+      // Grid lines
+      #if show-grid {
+        draw-grid(origin-x, pad-top, chart-width, chart-height, t)
+      }
+
+      // Axes
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
+
+      // Y-axis ticks
+      #draw-y-ticks(y-min, y-max, chart-height, pad-top, origin-x, t)
+
+      // X-axis ticks
+      #draw-x-ticks(x-min, x-max, chart-width, origin-x, origin-y + 4pt, t)
+
+      // Plot bubbles for each series
+      #for (si, s) in series.enumerate() {
+        let color = get-color(t, si)
+        for pt in s.points {
+          let px = origin-x + ((pt.at(0) - x-min) / x-range) * chart-width
+          let py = pad-top + chart-height - ((pt.at(1) - y-min) / y-range) * chart-height
+          let radius = min-radius + ((pt.at(2) - size-min) / size-range) * (max-radius - min-radius)
+
+          place(
+            left + top,
+            dx: px - radius,
+            dy: py - radius,
+            circle(
+              radius: radius,
+              fill: color.transparentize(40%),
+              stroke: color + 1.5pt,
+            )
+          )
+        }
+      }
+    ]
+
+    // Legend
+    #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
   ]
 }
