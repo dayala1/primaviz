@@ -52,11 +52,6 @@
   ]
 }
 
-// Right-positioned legend (vertical, for use in grid layout)
-#let draw-legend-right(entries, theme, width: 100pt) = {
-  draw-legend-vertical(entries, theme, width: width)
-}
-
 /// Automatically picks horizontal or vertical legend based on
 /// `theme.legend-position`.  Returns `none` when the legend is
 /// suppressed (`show-legend` is false or position is `"none"`).

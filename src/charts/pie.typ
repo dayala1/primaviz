@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/legend.typ": draw-legend-vertical, draw-legend-auto
+#import "../primitives/legend.typ": draw-legend-vertical
 #import "../primitives/polar.typ": pie-slice-points, place-donut-hole, separator-stroke
 
 /// Renders a pie or donut chart from label-value data.
@@ -36,6 +36,9 @@
   let total = values.sum()
   let n = values.len()
   let radius = size / 2
+
+  // Respect both show-legend param and theme legend-position
+  let show-legend = show-legend and t.legend-position != "none"
 
   // Calculate legend width based on longest label
   let legend-width = 130pt

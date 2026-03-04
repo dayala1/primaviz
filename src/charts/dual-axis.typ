@@ -21,11 +21,8 @@
   theme: none,
 ) = {
   validate-dual-axis-data(data, "dual-axis-chart")
-  let merged = if theme == none { (:) } else { theme }
-  if show-grid != auto {
-    merged.insert("show-grid", show-grid)
-  }
-  let t = resolve-theme(merged)
+  let grid-overrides = if show-grid != auto { (show-grid: show-grid) } else { none }
+  let t = resolve-theme(theme, overrides: grid-overrides)
 
   let labels = data.labels
   let left-series = data.left

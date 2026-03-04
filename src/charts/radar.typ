@@ -2,7 +2,7 @@
 #import "../theme.typ": resolve-theme, get-color
 #import "../validate.typ": validate-series-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/legend.typ": draw-legend-vertical, draw-legend-auto
+#import "../primitives/legend.typ": draw-legend-vertical
 #import "../primitives/polar.typ": place-polar-label
 
 /// Renders a radar (spider) chart for comparing series across multiple axes.
@@ -31,10 +31,14 @@
   let n = labels.len()
   let radius = size / 2 - 30pt  // More padding for labels
   let cx = size / 2
+  let cy = size / 2
 
   // Find max value across all series
   let all-values = series.map(s => s.values).flatten()
   let max-val = calc.max(..all-values)
+
+  // Respect both show-legend param and theme legend-position
+  let show-legend = show-legend and t.legend-position != "none"
 
   // Calculate legend width
   let legend-width = if show-legend and series.len() > 1 { 100pt } else { 0pt }
@@ -53,7 +57,7 @@
             let angle = -90deg + (i / n) * 360deg
             pts.push((
               cx + r * calc.cos(angle),
-              cx + r * calc.sin(angle)
+              cy + r * calc.sin(angle)
             ))
           }
           pts.push(pts.at(0))
@@ -73,7 +77,7 @@
             place(
               left + top,
               dx: cx + 3pt,
-              dy: cx - r - 4pt,
+              dy: cy - r - 4pt,
               text(size: 6pt, fill: t.text-color-light)[#val]
             )
           }
@@ -83,20 +87,20 @@
         #for (i, lbl) in labels.enumerate() {
           let angle = -90deg + (i / n) * 360deg
           let x-end = cx + radius * calc.cos(angle)
-          let y-end = cx + radius * calc.sin(angle)
+          let y-end = cy + radius * calc.sin(angle)
 
           // Axis line
           place(
             left + top,
             line(
-              start: (cx, cx),
+              start: (cx, cy),
               end: (x-end, y-end),
               stroke: t.grid-stroke
             )
           )
 
           // Label positioning - push labels outward based on angle
-          place-polar-label(cx, cx, angle.deg(), radius + 12pt,
+          place-polar-label(cx, cy, angle.deg(), radius + 12pt,
             text(size: t.value-label-size, fill: t.text-color, weight: "medium")[#lbl])
         }
 
@@ -108,7 +112,7 @@
             let r = (val / max-val) * radius
             pts.push((
               cx + r * calc.cos(angle),
-              cx + r * calc.sin(angle)
+              cy + r * calc.sin(angle)
             ))
           }
 

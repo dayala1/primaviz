@@ -15,7 +15,7 @@
 /// - data (dictionary, array): Label-value pairs as dict or array of tuples
 /// - width (length): Chart width
 /// - height (length): Chart height
-/// - dot-size (length): Radius of the dot at the end of each stem
+/// - dot-size (length): Diameter of the dot at the end of each stem
 /// - stem-width (length): Thickness of the stem line
 /// - title (none, content): Optional chart title
 /// - show-values (bool): Display value labels above dots
@@ -28,7 +28,7 @@
   data,
   width: 300pt,
   height: 200pt,
-  dot-size: 4pt,
+  dot-size: 8pt,
   stem-width: 1.5pt,
   title: none,
   show-values: true,
@@ -87,10 +87,10 @@
         // Dot
         place(
           left + top,
-          dx: x-center - dot-size,
-          dy: origin-y - stem-h - dot-size,
+          dx: x-center - dot-size / 2,
+          dy: origin-y - stem-h - dot-size / 2,
           circle(
-            radius: dot-size,
+            radius: dot-size / 2,
             fill: get-color(t, i),
             stroke: none,
           )
@@ -101,7 +101,7 @@
           place(
             left + top,
             dx: x-center - spacing / 2,
-            dy: origin-y - stem-h - dot-size * 2 - 1em,
+            dy: origin-y - stem-h - dot-size - 1em,
             box(width: spacing,
               align(center, text(size: t.value-label-size, fill: t.text-color)[#val]))
           )
@@ -128,7 +128,7 @@
 /// - data (dictionary, array): Label-value pairs as dict or array of tuples
 /// - width (length): Chart width
 /// - height (length): Chart height
-/// - dot-size (length): Radius of the dot at the end of each stem
+/// - dot-size (length): Diameter of the dot at the end of each stem
 /// - stem-width (length): Thickness of the stem line
 /// - title (none, content): Optional chart title
 /// - show-values (bool): Display value labels beside dots
@@ -140,7 +140,7 @@
   data,
   width: 350pt,
   height: 200pt,
-  dot-size: 4pt,
+  dot-size: 8pt,
   stem-width: 1.5pt,
   title: none,
   show-values: true,
@@ -198,10 +198,10 @@
         // Dot
         place(
           left + top,
-          dx: origin-x + stem-len - dot-size,
-          dy: y-center - dot-size,
+          dx: origin-x + stem-len - dot-size / 2,
+          dy: y-center - dot-size / 2,
           circle(
-            radius: dot-size,
+            radius: dot-size / 2,
             fill: get-color(t, i),
             stroke: none,
           )
@@ -211,7 +211,7 @@
         if show-values {
           place(
             left + top,
-            dx: origin-x + stem-len + dot-size + 5pt,
+            dx: origin-x + stem-len + dot-size / 2 + 5pt,
             dy: y-center,
             move(dy: -0.5em, text(size: t.value-label-size, fill: t.text-color)[#val])
           )

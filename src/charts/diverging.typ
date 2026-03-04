@@ -58,7 +58,7 @@
   let extra-h = if show-legend { 50pt } else { 30pt }
 
   chart-container(width, height, title, t, extra-height: extra-h)[
-    #let chart-height = height - 10pt
+    #let chart-height = height - t.axis-padding-top - t.axis-padding-bottom
     #let spacing = chart-height / n
     #let actual-bar-h = spacing * bar-frac
 

@@ -6,6 +6,7 @@
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks, draw-x-category-labels
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/annotations.typ": draw-annotations
+#import "../primitives/polar.typ": separator-stroke
 
 /// Renders a horizontal bar chart with category labels on the y-axis.
 ///
@@ -356,7 +357,7 @@
               width: bw,
               height: bar-h,
               fill: get-color(t, si),
-              stroke: (if t.background != none { t.background } else { white }) + 0.5pt,
+              stroke: separator-stroke(t, thickness: 0.5pt),
             )
           )
 
@@ -483,7 +484,7 @@
                 width: bw,
                 height: bar-h,
                 fill: get-color(t, ci),
-                stroke: (if t.background != none { t.background } else { white }) + 0.5pt,
+                stroke: separator-stroke(t, thickness: 0.5pt),
               )
             )
 
