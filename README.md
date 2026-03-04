@@ -2,14 +2,14 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Typst](https://img.shields.io/badge/typst-%3E%3D0.12.0-239dad)](https://typst.app)
-[![Charts](https://img.shields.io/badge/chart_types-50-orange)](screenshots/)
+[![Charts](https://img.shields.io/badge/chart_types-51-orange)](screenshots/)
 [![Pure Typst](https://img.shields.io/badge/dependencies-zero-brightgreen)]()
 
 A charting library for [Typst](https://typst.app) built entirely with native primitives (`rect`, `circle`, `line`, `polygon`, `place`). No external dependencies required.
 
 ## Gallery
 
-All 50 chart types across 6 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
+All 51 chart types across 6 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
 
 ![Showcase Page 1](screenshots/showcase-1.png)
 ![Showcase Page 2](screenshots/showcase-2.png)
@@ -22,8 +22,8 @@ All 50 chart types across 6 pages — see [`examples/showcase.typ`](examples/sho
 
 | File | Description |
 |---|---|
-| [`examples/showcase.typ`](examples/showcase.typ) | Compact 6-page showcase of all 50 chart types (dark theme) |
-| [`examples/demo.typ`](examples/demo.typ) | Comprehensive 18-page demo with all features, themes, and data loading |
+| [`examples/showcase.typ`](examples/showcase.typ) | Compact 6-page showcase of all chart types (dark theme) |
+| [`examples/demo.typ`](examples/demo.typ) | Comprehensive demo with all features, themes, and data loading |
 
 Sample data files used by the demo:
 - [`data/characters.json`](data/characters.json) — RPG character stats
@@ -37,7 +37,7 @@ typst compile --root . examples/demo.typ
 
 ## Features
 
-- **50 chart types** for data visualization
+- **51 chart types** for data visualization
 - **JSON data input** - load data directly from JSON files
 - **Theme system** - preset themes and custom overrides for consistent styling
 - **Customizable** - colors, sizes, labels, legends
@@ -71,6 +71,7 @@ typst compile --root . examples/demo.typ
 - `scatter-plot` - X/Y point plotting
 - `multi-scatter-plot` - Multi-series scatter
 - `bubble-chart` - Scatter with size dimension
+- `multi-bubble-chart` - Multi-series bubble chart
 
 ### Gauges & Progress
 - `gauge-chart` - Semi-circular dial gauge
@@ -133,13 +134,13 @@ Overlay reference lines, bands, and labels on bar, line, and scatter charts:
 ## Installation
 
 ```typst
-#import "@preview/primaviz:0.1.1": *
+#import "@preview/primaviz:0.2.0": *
 ```
 
 ## Usage
 
 ```typst
-#import "@preview/primaviz:0.1.1": *
+#import "@preview/primaviz:0.2.0": *
 
 // Load data from JSON
 #let data = json("mydata.json")
@@ -186,7 +187,7 @@ Every chart function accepts an optional `theme` parameter. Themes control color
 ### Using a preset theme
 
 ```typst
-#import "@preview/primaviz:0.1.1": *
+#import "@preview/primaviz:0.2.0": *
 
 #bar-chart(data, theme: themes.dark)
 ```
@@ -258,7 +259,7 @@ Pass a dictionary with only the keys you want to change. Unspecified keys fall b
 The default theme uses Tableau 10 colors. You can access colors from any theme via the `get-color` function:
 
 ```typst
-#import "@preview/primaviz:0.1.1": get-color, themes
+#import "@preview/primaviz:0.2.0": get-color, themes
 
 // Default palette
 #get-color(themes.default, 0)  // blue
@@ -284,7 +285,7 @@ primaviz/
       area.typ         # area, stacked-area
       pie.typ          # pie, donut
       radar.typ
-      scatter.typ      # scatter, multi-scatter, bubble
+      scatter.typ      # scatter, multi-scatter, bubble, multi-bubble
       gauge.typ        # gauge, progress-bar, circular-progress, progress-bars
       rings.typ        # ring-progress (fitness rings)
       heatmap.typ      # heatmap, calendar-heatmap, correlation-matrix
@@ -312,10 +313,11 @@ primaviz/
       chord.typ
       wordcloud.typ
     primitives/        # Low-level drawing helpers
-      axes.typ
+      axes.typ         # axis lines, ticks, labels, grid, cartesian-layout
       annotations.typ
       container.typ
-      legend.typ
+      legend.typ       # horizontal, vertical, draw-legend-auto
+      polar.typ        # shared polar/radial helpers (arcs, slices, labels)
       title.typ
     validate.typ       # Input validation helpers
   examples/
