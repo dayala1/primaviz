@@ -96,17 +96,19 @@
           if show-percentages { detail-parts.push(pct-text) }
           let detail = detail-parts.join(" · ")
 
-          // Center the text on the segment
+          // Center the text on the segment — use inset width to avoid boundary overlap
           let mid-y = y-top + seg-height / 2
           let avg-half = (top-half + bottom-half) / 2
+          let inset-half = calc.max(10pt, avg-half - 6pt)  // shrink box away from edges
+          let label-size = if avg-half * 2 < 60pt { calc.max(5pt, t.value-label-size - 1pt) } else { t.value-label-size }
 
           place(
             left + top,
-            dx: center-x - avg-half,
+            dx: center-x - inset-half,
             dy: mid-y - 7pt,
-            box(width: avg-half * 2, height: 14pt)[
+            box(width: inset-half * 2, height: 14pt, clip: true)[
               #align(center)[
-                #text(size: t.value-label-size, fill: t.text-color-inverse, weight: "bold")[#label-text]
+                #text(size: label-size, fill: t.text-color-inverse, weight: "bold")[#label-text]
               ]
             ]
           )
@@ -114,11 +116,11 @@
           if n <= 9 and detail != "" {
             place(
               left + top,
-              dx: center-x - avg-half,
+              dx: center-x - inset-half,
               dy: mid-y + 3pt,
-              box(width: avg-half * 2, height: 12pt)[
+              box(width: inset-half * 2, height: 12pt, clip: true)[
                 #align(center)[
-                  #text(size: t.value-label-size * 0.85, fill: t.text-color-inverse)[#detail]
+                  #text(size: label-size * 0.85, fill: t.text-color-inverse)[#detail]
                 ]
               ]
             )
