@@ -2,7 +2,7 @@
 #import "../theme.typ": resolve-theme, get-color
 #import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/annotations.typ": draw-annotations
 
@@ -58,16 +58,14 @@
 
   let point-color = if color != none { color } else { get-color(t, 0) }
 
-  let pad-left = t.axis-padding-left + 10pt  // extra for numeric labels
-  let pad-bottom = t.axis-padding-bottom
-  let pad-top = t.axis-padding-top
-  let pad-right = t.axis-padding-right
+  let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
-    #let origin-x = pad-left
-    #let origin-y = pad-top + chart-height
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height)[
       // Grid lines
@@ -155,16 +153,14 @@
   if x-range == 0 { x-range = 1 }
   if y-range == 0 { y-range = 1 }
 
-  let pad-left = t.axis-padding-left + 10pt
-  let pad-bottom = t.axis-padding-bottom
-  let pad-top = t.axis-padding-top
-  let pad-right = t.axis-padding-right
+  let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
   chart-container(width, height, title, t, extra-height: 50pt)[
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
-    #let origin-x = pad-left
-    #let origin-y = pad-top + chart-height
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height)[
       // Grid lines
@@ -264,16 +260,14 @@
 
   let bubble-color = if color != none { color } else { get-color(t, 0) }
 
-  let pad-left = t.axis-padding-left + 10pt
-  let pad-bottom = t.axis-padding-bottom
-  let pad-top = t.axis-padding-top
-  let pad-right = t.axis-padding-right
+  let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
-    #let origin-x = pad-left
-    #let origin-y = pad-top + chart-height
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height)[
       // Grid lines

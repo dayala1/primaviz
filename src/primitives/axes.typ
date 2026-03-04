@@ -3,6 +3,35 @@
 #import "../theme.typ": *
 #import "../util.typ": format-number
 
+/// Computes the standard Cartesian layout dimensions from theme padding.
+/// Returns a dictionary with: pad-left, pad-right, pad-top, pad-bottom,
+/// chart-width, chart-height, origin-x, origin-y.
+///
+/// - width (length): Total available width
+/// - height (length): Total available height
+/// - theme (dictionary): Resolved theme
+/// - extra-left (length): Additional left padding beyond theme default
+/// - extra-right (length): Additional right padding beyond theme default
+/// -> dictionary
+#let cartesian-layout(width, height, theme, extra-left: 0pt, extra-right: 0pt) = {
+  let pad-left = theme.axis-padding-left + extra-left
+  let pad-right = theme.axis-padding-right + extra-right
+  let pad-top = theme.axis-padding-top
+  let pad-bottom = theme.axis-padding-bottom
+  let chart-width = width - pad-left - pad-right
+  let chart-height = height - pad-top - pad-bottom
+  (
+    pad-left: pad-left,
+    pad-right: pad-right,
+    pad-top: pad-top,
+    pad-bottom: pad-bottom,
+    chart-width: chart-width,
+    chart-height: chart-height,
+    origin-x: pad-left,
+    origin-y: pad-top + chart-height,
+  )
+}
+
 // Draw Y-axis (vertical) and X-axis (horizontal) lines.
 #let draw-axis-lines(origin-x, origin-y, x-end, y-start, theme) = {
   // Y-axis: vertical from y-start down to origin-y at x=origin-x

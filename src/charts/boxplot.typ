@@ -2,7 +2,7 @@
 #import "../theme.typ": resolve-theme, get-color
 #import "../validate.typ": validate-boxplot-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
 
 /// Renders a box-and-whisker plot for comparing distributions.
 ///
@@ -54,17 +54,14 @@
   let y-min = global-min - padding
   let y-max = global-max + padding
 
-  let pad-left = t.axis-padding-left
-  let pad-bottom = t.axis-padding-bottom
-  let pad-top = t.axis-padding-top
-  let pad-right = t.axis-padding-right
+  let cl = cartesian-layout(width, height, t)
 
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let chart-width = width - pad-left - pad-right
-    #let chart-height = height - pad-top - pad-bottom
-
-    #let origin-x = pad-left
-    #let origin-y = pad-top + chart-height
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
     #let y-start = pad-top
 
     #box(width: width, height: height)[

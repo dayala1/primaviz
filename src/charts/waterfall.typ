@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, format-number
 #import "../validate.typ": validate-waterfall-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
 
 /// Renders a waterfall (bridge) chart showing cumulative effect of positive and negative values.
 ///
@@ -101,20 +101,21 @@
   let y-max = max-val + padding
   let y-range = y-max - y-min
 
+  let cl = cartesian-layout(width, height, t)
+
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let pad-left = t.axis-padding-left
-    #let pad-bottom = t.axis-padding-bottom
-    #let pad-top = t.axis-padding-top
-    #let pad-right = t.axis-padding-right
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height)[
       // Grid
-      #draw-grid(pad-left, pad-top, chart-width, chart-height, t)
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
       // Axes
-      #draw-axis-lines(pad-left, pad-top + chart-height, pad-left + chart-width, pad-top, t)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // Y-axis ticks
       #draw-y-ticks(y-min, y-max, chart-height, pad-top, 0pt, t, digits: 0)
@@ -136,7 +137,7 @@
         let y-top = calc.max(y-s, y-e)
         let y-bot = calc.min(y-s, y-e)
 
-        let x-pos = pad-left + i * spacing + (spacing - actual-bw) / 2
+        let x-pos = origin-x + i * spacing + (spacing - actual-bw) / 2
         let bar-top-px = val-to-y(y-top)
         let bar-bot-px = val-to-y(y-bot)
         let bar-h = bar-bot-px - bar-top-px
@@ -174,7 +175,7 @@
           if next-tp != "total" and next-tp != "subtotal" {
             let connector-y-px = val-to-y(connector-y-val)
             let x-end = x-pos + actual-bw
-            let x-next-start = pad-left + (i + 1) * spacing + (spacing - actual-bw) / 2
+            let x-next-start = origin-x + (i + 1) * spacing + (spacing - actual-bw) / 2
             place(left + top,
               line(
                 start: (x-end, connector-y-px),
@@ -186,13 +187,13 @@
         }
 
         // X-axis label
-        place(left + top, dx: x-pos + actual-bw / 2 - 15pt, dy: pad-top + chart-height + 4pt,
+        place(left + top, dx: x-pos + actual-bw / 2 - 15pt, dy: origin-y + 4pt,
           text(size: t.axis-label-size, fill: t.text-color)[#labels.at(i)]
         )
       }
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, pad-left + chart-width / 2, pad-top + chart-height / 2, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t)
     ]
   ]
 }

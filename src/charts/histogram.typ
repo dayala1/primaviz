@@ -2,7 +2,7 @@
 #import "../theme.typ": resolve-theme, get-color
 #import "../validate.typ": validate-histogram-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-axis-lines, draw-grid, draw-y-ticks, draw-x-ticks, draw-axis-titles
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-y-ticks, draw-x-ticks, draw-axis-titles
 
 /// Renders a histogram showing the frequency distribution of numeric data.
 ///
@@ -87,28 +87,28 @@
   if y-max == 0 { y-max = 1 }
 
   // Render
-  let pad-left = t.axis-padding-left
-  let pad-bottom = t.axis-padding-bottom
-  let pad-top = t.axis-padding-top
-  let pad-right = t.axis-padding-right
+  let cl = cartesian-layout(width, height, t)
 
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height - 10pt)[
       // Grid
-      #draw-grid(pad-left, pad-top, chart-width, chart-height, t)
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
       // Axes
-      #draw-axis-lines(pad-left, pad-top + chart-height, pad-left + chart-width, pad-top, t)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // Draw bars (no gaps — contiguous)
       #let bar-w = chart-width / num-bins
       #for bi in array.range(num-bins) {
         let val = y-values.at(bi)
         let bar-h = (val / y-max) * chart-height
-        let x-pos = pad-left + bi * bar-w
+        let x-pos = origin-x + bi * bar-w
         let y-pos = pad-top + chart-height - bar-h
 
         let fill-color = if color != none { color } else { get-color(t, 0) }
@@ -138,13 +138,13 @@
       }
 
       // Y-axis ticks
-      #draw-y-ticks(0, y-max, chart-height, pad-top, pad-left, t, digits: if density { 3 } else { 1 })
+      #draw-y-ticks(0, y-max, chart-height, pad-top, origin-x, t, digits: if density { 3 } else { 1 })
 
       // X-axis ticks (numeric)
-      #draw-x-ticks(data-min, data-max, chart-width, pad-left, pad-top + chart-height + 4pt, t, digits: 1)
+      #draw-x-ticks(data-min, data-max, chart-width, origin-x, origin-y + 4pt, t, digits: 1)
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, pad-left + chart-width / 2, pad-top + chart-height / 2, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t)
     ]
   ]
 }

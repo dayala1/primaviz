@@ -2,7 +2,7 @@
 #import "../theme.typ": resolve-theme, get-color
 #import "../validate.typ": validate-dual-axis-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-grid, draw-axis-titles
+#import "../primitives/axes.typ": cartesian-layout, draw-grid, draw-axis-titles
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../util.typ": format-number
 
@@ -48,16 +48,14 @@
   let r-range = r-max - r-min
   if r-range == 0 { r-range = 1 }
 
-  let pad-left = t.axis-padding-left + 10pt
-  let pad-right = t.axis-padding-left + 10pt  // same padding for right axis labels
-  let pad-top = t.axis-padding-top
-  let pad-bottom = t.axis-padding-bottom
+  let cl = cartesian-layout(width, height, t, extra-left: 10pt, extra-right: 10pt)
 
   chart-container(width, height, title, t, extra-height: 50pt)[
-    #let chart-height = height - pad-top - pad-bottom
-    #let chart-width = width - pad-left - pad-right
-    #let origin-x = pad-left
-    #let origin-y = pad-top + chart-height
+    #let pad-top = cl.pad-top
+    #let chart-height = cl.chart-height
+    #let chart-width = cl.chart-width
+    #let origin-x = cl.origin-x
+    #let origin-y = cl.origin-y
 
     #box(width: width, height: height)[
       // Grid lines (based on left axis scale)
