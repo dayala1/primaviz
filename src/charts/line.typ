@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data
 #import "../validate.typ": validate-simple-data, validate-series-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": draw-grid, draw-axis-titles
+#import "../primitives/axes.typ": draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
 #import "../primitives/legend.typ": draw-legend, draw-legend-vertical
 #import "../primitives/annotations.typ": draw-annotations
 
@@ -51,24 +51,36 @@
 
   let n = values.len()
 
+  let pad-left = t.axis-padding-left
+  let pad-bottom = t.axis-padding-bottom
+  let pad-top = t.axis-padding-top
+  let pad-right = t.axis-padding-right
+
   chart-container(width, height, title, t, extra-height: 30pt)[
-    #let chart-height = height - 20pt
-    #let chart-width = width - 50pt
+    #let chart-height = height - pad-top - pad-bottom
+    #let chart-width = width - pad-left - pad-right
+    #let origin-x = pad-left
+    #let origin-y = pad-top + chart-height
 
-    #box(width: width, height: chart-height)[
-      // Grid (no-op by default)
-      #draw-grid(40pt, 0pt, chart-width, chart-height, t)
+    #box(width: width, height: height)[
+      // Grid
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      #place(left + top, line(start: (40pt, 0pt), end: (40pt, chart-height), stroke: t.axis-stroke))
-      #place(left + bottom, line(start: (40pt, 0pt), end: (width, 0pt), stroke: t.axis-stroke))
+      // Axes
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
+      // Y-axis ticks
+      #draw-y-ticks(min-val, max-val, chart-height, pad-top, origin-x, t)
+
+      // Compute data point positions
       #let points = ()
       #for (i, val) in values.enumerate() {
-        let x = if n == 1 { 45pt + chart-width / 2 } else { 45pt + (i / (n - 1)) * (chart-width - 10pt) }
-        let y = chart-height - ((val - min-val) / val-range) * (chart-height - 20pt) - 10pt
+        let x = if n == 1 { origin-x + chart-width / 2 } else { origin-x + (i / (n - 1)) * chart-width }
+        let y = pad-top + chart-height - ((val - min-val) / val-range) * chart-height
         points.push((x, y))
       }
 
+      // Draw lines between points
       #for i in array.range(calc.max(n - 1, 0)) {
         let p1 = points.at(i)
         let p2 = points.at(i + 1)
@@ -82,6 +94,7 @@
         )
       }
 
+      // Draw points and value labels
       #if show-points {
         for (i, pt) in points.enumerate() {
           place(
@@ -94,41 +107,29 @@
           if show-values {
             place(
               left + top,
-              dx: pt.at(0) - 10pt,
-              dy: pt.at(1) - 15pt,
-              text(size: t.axis-label-size, fill: t.text-color)[#values.at(i)]
+              dx: pt.at(0),
+              dy: pt.at(1) - 1.5em,
+              move(dx: -1em, text(size: t.axis-label-size, fill: t.text-color)[#values.at(i)])
             )
           }
         }
       }
 
+      // X-axis category labels — spread evenly across chart width
+      #let x-spacing = if n > 1 { chart-width / (n - 1) } else { chart-width }
       #for (i, lbl) in labels.enumerate() {
-        let x = if n == 1 { 45pt + chart-width / 2 } else { 45pt + (i / (n - 1)) * (chart-width - 10pt) }
-        place(
-          left + bottom,
-          dx: x - 15pt,
-          dy: 10pt,
-          text(size: t.axis-label-size, fill: t.text-color)[#lbl]
-        )
-      }
-
-      #for i in array.range(t.tick-count) {
-        let fraction = if t.tick-count > 1 { i / (t.tick-count - 1) } else { 0 }
-        let y-val = calc.round(min-val + val-range * fraction, digits: 1)
-        let y-pos = chart-height - fraction * (chart-height - 20pt) - 10pt
-        place(
-          left + top,
-          dx: 5pt,
-          dy: y-pos - 5pt,
-          text(size: t.axis-label-size, fill: t.text-color)[#y-val]
+        let x = if n == 1 { origin-x } else { origin-x + (i / (n - 1)) * chart-width }
+        place(left + top, dx: x - x-spacing / 2, dy: origin-y + 4pt,
+          box(width: x-spacing, height: 1.5em,
+            align(center + top, text(size: t.axis-label-size, fill: t.text-color)[#lbl]))
         )
       }
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, 40pt + chart-width / 2, chart-height / 2, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
 
       // Annotations
-      #draw-annotations(annotations, 45pt, 10pt, chart-width - 10pt, chart-height - 20pt, 0, calc.max(n - 1, 1), min-val, max-val, t)
+      #draw-annotations(annotations, origin-x, pad-top, chart-width, chart-height, 0, calc.max(n - 1, 1), min-val, max-val, t)
     ]
   ]
 }
@@ -169,16 +170,26 @@
 
   let n = labels.len()
 
+  let pad-left = t.axis-padding-left
+  let pad-bottom = t.axis-padding-bottom
+  let pad-top = t.axis-padding-top
+  let pad-right = t.axis-padding-right
+
   chart-container(width, height, title, t, extra-height: 50pt)[
-    #let chart-height = height - 20pt
-    #let chart-width = width - 50pt
+    #let chart-height = height - pad-top - pad-bottom
+    #let chart-width = width - pad-left - pad-right
+    #let origin-x = pad-left
+    #let origin-y = pad-top + chart-height
 
-    #box(width: width, height: chart-height)[
-      // Grid (no-op by default)
-      #draw-grid(40pt, 0pt, chart-width, chart-height, t)
+    #box(width: width, height: height)[
+      // Grid
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      #place(left + top, line(start: (40pt, 0pt), end: (40pt, chart-height), stroke: t.axis-stroke))
-      #place(left + bottom, line(start: (40pt, 0pt), end: (width, 0pt), stroke: t.axis-stroke))
+      // Axes
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
+
+      // Y-axis ticks
+      #draw-y-ticks(min-val, max-val, chart-height, pad-top, origin-x, t)
 
       #for (si, s) in series.enumerate() {
         let values = s.values
@@ -186,8 +197,8 @@
 
         let points = ()
         for (i, val) in values.enumerate() {
-          let x = if n == 1 { 45pt + chart-width / 2 } else { 45pt + (i / (n - 1)) * (chart-width - 10pt) }
-          let y = chart-height - ((val - min-val) / val-range) * (chart-height - 20pt) - 10pt
+          let x = if n == 1 { origin-x + chart-width / 2 } else { origin-x + (i / (n - 1)) * chart-width }
+          let y = pad-top + chart-height - ((val - min-val) / val-range) * chart-height
           points.push((x, y))
         }
 
@@ -216,30 +227,18 @@
         }
       }
 
+      // X-axis category labels — spread evenly across chart width
+      #let x-spacing = if n > 1 { chart-width / (n - 1) } else { chart-width }
       #for (i, lbl) in labels.enumerate() {
-        let x = if n == 1 { 45pt + chart-width / 2 } else { 45pt + (i / (n - 1)) * (chart-width - 10pt) }
-        place(
-          left + bottom,
-          dx: x - 15pt,
-          dy: 10pt,
-          text(size: t.axis-label-size, fill: t.text-color)[#lbl]
-        )
-      }
-
-      #for i in array.range(t.tick-count) {
-        let fraction = if t.tick-count > 1 { i / (t.tick-count - 1) } else { 0 }
-        let y-val = calc.round(min-val + val-range * fraction, digits: 1)
-        let y-pos = chart-height - fraction * (chart-height - 20pt) - 10pt
-        place(
-          left + top,
-          dx: 5pt,
-          dy: y-pos - 5pt,
-          text(size: t.axis-label-size, fill: t.text-color)[#y-val]
+        let x = if n == 1 { origin-x } else { origin-x + (i / (n - 1)) * chart-width }
+        place(left + top, dx: x - x-spacing / 2, dy: origin-y + 4pt,
+          box(width: x-spacing, height: 1.5em,
+            align(center + top, text(size: t.axis-label-size, fill: t.text-color)[#lbl]))
         )
       }
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, 40pt + chart-width / 2, chart-height / 2, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
 
     #if show-legend and t.legend-position != "none" {

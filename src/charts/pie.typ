@@ -82,13 +82,14 @@
             // Only show percentage if slice is big enough
             if pct >= 5 {
               let label-dist = radius * (if donut { 0.75 } else { 0.6 })
-              let lx = center-x + label-dist * calc.cos(mid-angle) - 12pt
-              let ly = center-y + label-dist * calc.sin(mid-angle) - 6pt
+              let lx = center-x + label-dist * calc.cos(mid-angle)
+              let ly = center-y + label-dist * calc.sin(mid-angle)
               place(
                 left + top,
                 dx: lx,
                 dy: ly,
-                text(size: t.value-label-size, fill: t.text-color-inverse, weight: "bold")[#pct%]
+                move(dx: -1em, dy: -0.5em,
+                  text(size: t.value-label-size, fill: t.text-color-inverse, weight: "bold")[#pct%])
               )
             }
           }

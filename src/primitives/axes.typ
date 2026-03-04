@@ -16,6 +16,7 @@
 }
 
 // Draw tick labels along the Y axis.
+// Labels are right-aligned into the padding area left of x-pos, vertically centered on the tick.
 #let draw-y-ticks(min-val, max-val, chart-height, y-offset, x-pos, theme, digits: 1) = {
   let tick-count = theme.tick-count
   let val-range = max-val - min-val
@@ -23,13 +24,16 @@
     let fraction = if tick-count > 1 { i / (tick-count - 1) } else { 0 }
     let value = min-val + val-range * fraction
     let y = y-offset + chart-height - fraction * chart-height
-    place(left + top, dx: x-pos, dy: y - 5pt,
-      text(size: theme.axis-label-size, fill: theme.text-color)[#format-number(value, digits: digits, mode: theme.number-format)]
+    place(left + top, dx: 0pt, dy: y,
+      box(width: x-pos - 2pt, height: 0pt,
+        align(right, move(dy: -0.5em,
+          text(size: theme.axis-label-size, fill: theme.text-color)[#format-number(value, digits: digits, mode: theme.number-format)])))
     )
   }
 }
 
 // Draw category labels along the X axis.
+// Labels are centered under their position using the spacing width.
 #let draw-x-category-labels(labels, x-start, spacing, y-pos, theme, center-offset: 0pt) = {
   let n = labels.len()
   let rotate-labels = n > 8
@@ -39,20 +43,22 @@
     if calc.rem(i, skip) != 0 and i != n - 1 { continue }
     let x = x-start + i * spacing + center-offset
     if rotate-labels {
-      place(left + top, dx: x - 5pt, dy: y-pos,
+      place(left + top, dx: x + spacing / 2, dy: y-pos,
         rotate(-45deg, origin: top + right,
           text(size: theme.axis-label-size, fill: theme.text-color)[#labels.at(i)]
         )
       )
     } else {
-      place(left + top, dx: x - 15pt, dy: y-pos,
-        text(size: theme.axis-label-size, fill: theme.text-color)[#labels.at(i)]
+      place(left + top, dx: x, dy: y-pos,
+        box(width: spacing, height: 1.5em,
+          align(center + top, text(size: theme.axis-label-size, fill: theme.text-color)[#labels.at(i)]))
       )
     }
   }
 }
 
 // Draw numeric tick labels along the X axis.
+// Labels are centered on their tick position.
 #let draw-x-ticks(min-val, max-val, chart-width, x-offset, y-pos, theme, digits: 1) = {
   let tick-count = theme.tick-count
   let val-range = max-val - min-val
@@ -60,8 +66,9 @@
     let fraction = if tick-count > 1 { i / (tick-count - 1) } else { 0 }
     let value = min-val + val-range * fraction
     let x = x-offset + fraction * chart-width
-    place(left + top, dx: x - 12pt, dy: y-pos,
-      text(size: theme.axis-label-size, fill: theme.text-color)[#format-number(value, digits: digits, mode: theme.number-format)]
+    place(left + top, dx: x - 1.5em, dy: y-pos,
+      box(width: 3em, height: 1.5em,
+        align(center + top, text(size: theme.axis-label-size, fill: theme.text-color)[#format-number(value, digits: digits, mode: theme.number-format)]))
     )
   }
 }
@@ -91,7 +98,7 @@
 // Draw axis title labels (x below, y rotated on left).
 #let draw-axis-titles(x-label, y-label, x-center, y-center, theme) = {
   if x-label != none {
-    place(left + top, dx: x-center, dy: y-center + 18pt,
+    place(left + top, dx: x-center, dy: y-center + 1.5em,
       align(center, text(size: theme.axis-title-size, fill: theme.text-color)[#x-label])
     )
   }
