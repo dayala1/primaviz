@@ -120,13 +120,18 @@
 
 #v(12pt)
 
-// Metric row — multiple cards side by side
+// Metric card with suffix
+#metric-card(value: 94.2, label: "Uptime", suffix: "%")
+
+#v(12pt)
+
+// Metric row — multiple cards side by side, with suffix
 #metric-row(
   (
     (value: 1234, label: "Revenue", delta: 12.5),
     (value: 42, label: "Users Online"),
     (value: 8750, label: "Expenses", delta: -5.2, format: "si"),
-    (value: 99.9, label: "Uptime %", delta: 0.1, trend: (99, 99, 100, 99, 100, 100, 99, 100)),
+    (value: 99.9, label: "Uptime", delta: 0.1, suffix: "%", trend: (99, 99, 100, 99, 100, 100, 99, 100)),
   ),
   gap: 12pt,
 )
@@ -277,4 +282,42 @@
   title: "Word Cloud (equal weights)",
   min-size: 14pt,
   max-size: 14pt,
+)
+
+#v(12pt)
+
+// Word cloud with circle shape
+#word-cloud(
+  (
+    words: (
+      (text: "Circle", weight: 10),
+      (text: "Shape", weight: 8),
+      (text: "Cloud", weight: 6),
+      (text: "Words", weight: 5),
+      (text: "Layout", weight: 3),
+      (text: "Spiral", weight: 2),
+    ),
+  ),
+  width: 250pt,
+  height: 200pt,
+  title: "Word Cloud (circle)",
+  shape: "circle",
+)
+
+#v(12pt)
+
+// Word cloud with diamond shape
+#word-cloud(
+  (
+    words: (
+      (text: "Diamond", weight: 10),
+      (text: "Shape", weight: 7),
+      (text: "Mask", weight: 5),
+      (text: "Test", weight: 3),
+    ),
+  ),
+  width: 250pt,
+  height: 200pt,
+  title: "Word Cloud (diamond)",
+  shape: "diamond",
 )

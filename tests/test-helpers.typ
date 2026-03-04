@@ -22,3 +22,14 @@
   ),
 )
 #bar-chart(aggregate(multi, fn: "sum"), title: "aggregate(sum)")
+
+#pagebreak()
+
+= Page Grid
+
+#page-grid(cols: 2, rows: 2, (
+  bar-chart(raw, width: 200pt, height: 120pt, title: "Grid cell 1"),
+  line-chart(raw, width: 200pt, height: 120pt, title: "Grid cell 2"),
+  pie-chart(raw, size: 120pt, title: "Grid cell 3"),
+  bar-chart(sort-data(raw), width: 200pt, height: 120pt, title: "Grid cell 4"),
+))
