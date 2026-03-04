@@ -527,3 +527,60 @@
 
   // 48. (empty cell — odd count fills naturally)
 ))
+
+// ── Page 9: Theme Comparison ──────────────────────────────────────────────────
+#pagebreak()
+#set page(fill: white)
+#set text(size: 7pt, fill: black)
+
+#let sample = (labels: ("Jan", "Feb", "Mar", "Apr", "May"), values: (42, 58, 35, 71, 49))
+#let TW = 160pt
+#let TH = 110pt
+
+#{
+  let theme-list = (
+    ("default", themes.default),
+    ("minimal", themes.minimal),
+    ("dark", themes.dark),
+    ("presentation", themes.presentation),
+    ("print", themes.print),
+    ("accessible", themes.accessible),
+  )
+
+  // Bar charts across all 6 themes
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 10pt,
+    ..theme-list.map(((name, t)) => {
+      bar-chart(sample, width: TW, height: TH, title: name, theme: t)
+    })
+  )
+
+  v(8pt)
+
+  // Line charts across all 6 themes
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 10pt,
+    ..theme-list.map(((name, t)) => {
+      line-chart(sample, width: TW, height: TH, title: name, theme: t)
+    })
+  )
+
+  v(8pt)
+
+  // with-theme demo
+  text(size: 9pt, weight: "bold")[with-theme: all charts inherit dark theme]
+  v(4pt)
+  with-theme(themes.dark)[
+    #grid(
+      columns: (1fr, 1fr, 1fr),
+      column-gutter: 8pt,
+      bar-chart(sample, width: TW, height: TH, title: "bar (inherited)"),
+      line-chart(sample, width: TW, height: TH, title: "line (inherited)"),
+      pie-chart(sample, size: 90pt, title: "pie (inherited)"),
+    )
+  ]
+}

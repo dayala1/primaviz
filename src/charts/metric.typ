@@ -40,7 +40,14 @@
   let delta-content = if delta != none {
     let is-positive = delta > 0
     let is-zero = delta == 0
-    let delta-color = if is-positive { rgb("#2d9d3a") } else if is-zero { gray } else { rgb("#d13438") }
+    let has-dark-bg = t.background != none
+    let delta-color = if is-positive {
+      if has-dark-bg { rgb("#4ade80") } else { rgb("#2d9d3a") }
+    } else if is-zero {
+      t.text-color-light
+    } else {
+      if has-dark-bg { rgb("#f87171") } else { rgb("#d13438") }
+    }
     let arrow = if is-positive { "▲" } else if is-zero { "–" } else { "▼" }
     let sign = if is-positive { "+" } else { "" }
     let delta-str = sign + str(calc.round(delta, digits: 1)) + "%"
@@ -65,7 +72,12 @@
     }
 
     // Determine sparkline color from trend direction
-    let spark-color = if trend.last() >= trend.first() { rgb("#2d9d3a").transparentize(30%) } else { rgb("#d13438").transparentize(30%) }
+    let has-dark-bg = t.background != none
+    let spark-color = if trend.last() >= trend.first() {
+      if has-dark-bg { rgb("#4ade80").transparentize(30%) } else { rgb("#2d9d3a").transparentize(30%) }
+    } else {
+      if has-dark-bg { rgb("#f87171").transparentize(30%) } else { rgb("#d13438").transparentize(30%) }
+    }
 
     v(6pt)
     box(width: spark-width, height: spark-height)[
@@ -100,7 +112,7 @@
     width: width,
     height: height,
     fill: if t.background != none { t.background } else { white },
-    stroke: if t.border != none { t.border } else { 0.5pt + luma(220) },
+    stroke: if t.border != none { t.border } else if t.background != none { 0.5pt + t.text-color-light } else { 0.5pt + luma(220) },
     radius: 4pt,
     inset: 12pt,
   )[

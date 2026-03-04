@@ -177,6 +177,26 @@
 
   chart-container(day-label-width + n-weeks * cell-size + 20pt, month-label-height + 7 * cell-size, title, t, extra-height: 40pt)[
     #box[
+      // Month labels along the top (x-axis)
+      #if show-month-labels {
+        let month-names = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+        let prev-month = ""
+        for (i, dt) in dates.enumerate() {
+          let parts = dt.split("-")
+          let month-str = if parts.len() >= 2 { parts.at(1) } else { "" }
+          if month-str != prev-month and month-str != "" {
+            let week = calc.floor(i / 7)
+            let month-idx = int(month-str) - 1
+            let label = if month-idx >= 0 and month-idx < 12 { month-names.at(month-idx) } else { month-str }
+            place(left + top,
+              dx: day-label-width + week * cell-size,
+              dy: 0pt,
+              text(size: 6pt, fill: t.text-color)[#label])
+            prev-month = month-str
+          }
+        }
+      }
+
       // Day labels (Mon, Wed, Fri)
       #if show-day-labels {
         let days = ("Mon", "", "Wed", "", "Fri", "", "Sun")
@@ -197,7 +217,9 @@
         let week = calc.floor(i / 7)
         let day = calc.rem(i, 7)
         let normalized = (val - min-val) / val-range
-        let cell-color = if val == 0 { luma(240) } else { heat-color(normalized, palette: palette) }
+        let empty-fill = if t.background != none { t.background.lighten(20%) } else { luma(240) }
+        let empty-stroke = if t.background != none { 0.5pt + t.text-color-light } else { 0.5pt + luma(220) }
+        let cell-color = if val == 0 { empty-fill } else { heat-color(normalized, palette: palette) }
 
         place(
           left + top,
@@ -207,7 +229,7 @@
             width: cell-size - 2pt,
             height: cell-size - 2pt,
             fill: cell-color,
-            stroke: if val == 0 { 0.5pt + luma(220) } else { none },
+            stroke: if val == 0 { empty-stroke } else { none },
             radius: 2pt,
           )
         )

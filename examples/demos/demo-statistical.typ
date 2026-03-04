@@ -31,7 +31,7 @@
        (10, 15, 20, 22, 25, 25, 28, 30, 30, 32, 35, 35, 38, 40, 42, 45, 50, 55, 60, 65),
        (2, 5, 8, 10, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35, 38, 42, 48, 55, 62, 70),
      )),
-    width: W, height: H, title: "violin-plot", theme: lt,
+    width: W, height: H, title: "violin-plot", y-label: "Value", x-label: "Width = density", show-grid: true, theme: lt,
   ),
   waterfall-chart(
     (labels: ("Start", "+Sales", "+Svc", "-COGS", "-OpEx", "Total"),

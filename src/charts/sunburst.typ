@@ -148,16 +148,19 @@
           // Determine text color based on depth
           let label-color = if seg.depth <= 2 { t.text-color-inverse } else { t.text-color }
 
+          let label-size = calc.max(t.value-label-size - 1pt, 5pt)
+          let label-w = 4em
           place(
             left + top,
-            dx: lx,
-            dy: ly,
-            move(dx: -1.5em, dy: -0.5em,
-              text(
-                size: calc.max(t.value-label-size - 1pt, 5pt),
-                fill: label-color,
-                weight: if seg.depth == 1 { "bold" } else { "regular" },
-              )[#seg.name])
+            dx: lx - label-w / 2,
+            dy: ly - 0.5em,
+            box(width: label-w, height: 1em,
+              align(center + horizon,
+                text(
+                  size: label-size,
+                  fill: label-color,
+                  weight: if seg.depth == 1 { "bold" } else { "regular" },
+                )[#seg.name]))
           )
         }
       }

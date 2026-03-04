@@ -58,7 +58,7 @@
         line(
           start: (0pt, 0pt),
           end: (0pt, chart-height - 20pt),
-          stroke: 1.5pt + luma(200),
+          stroke: 1.5pt + t.text-color-light,
         ),
       )
 
@@ -87,7 +87,7 @@
           line(
             start: (0pt, 0pt),
             end: (arm-length, 0pt),
-            stroke: 1pt + luma(200),
+            stroke: 1pt + t.text-color-light,
           ),
         )
 
@@ -121,7 +121,7 @@
           dy: y-pos - 1em,
           box(width: text-area-width, height: auto)[
             #set align(text-align)
-            #text(size: t.axis-label-size, fill: luma(120), weight: "medium")[#ev.date]
+            #text(size: t.axis-label-size, fill: t.text-color-light, weight: "medium")[#ev.date]
           ],
         )
 
@@ -144,7 +144,7 @@
             dy: y-pos + 1.5em,
             box(width: text-area-width, height: auto)[
               #set align(text-align)
-              #text(size: t.axis-label-size, fill: luma(100))[#ev.description]
+              #text(size: t.axis-label-size, fill: t.text-color-light)[#ev.description]
             ],
           )
         }
