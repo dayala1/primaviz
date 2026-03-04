@@ -113,15 +113,15 @@
       #place(left + top, dx: cx + radius, dy: cy + 0.5em,
         text(size: t.axis-label-size, fill: t.text-color)[#max-val])
 
-      // Value display — centered at gauge center
+      // Value display — centered at gauge center, scaled to chart size
+      #let value-size = calc.max(10pt, size * 0.1)
       #if show-value {
         place(
           left + top,
-          dx: cx,
-          dy: cy,
-          move(dx: -2em, dy: -1.5em,
-            box(width: 4em, align(center,
-              text(size: 16pt, weight: "bold", fill: t.text-color)[#calc.round(value, digits: 1)])))
+          dx: cx - size * 0.15,
+          dy: cy - value-size,
+          box(width: size * 0.3, align(center,
+            text(size: value-size, weight: "bold", fill: t.text-color)[#calc.round(value, digits: 1)]))
         )
       }
 
@@ -129,11 +129,10 @@
       #if label != none {
         place(
           left + top,
-          dx: cx,
-          dy: cy + 1em,
-          move(dx: -3em,
-            box(width: 6em, align(center,
-              text(size: t.value-label-size, fill: t.text-color-light)[#label])))
+          dx: cx - size * 0.25,
+          dy: cy + 0.5em,
+          box(width: size * 0.5, align(center,
+            text(size: t.value-label-size, fill: t.text-color-light)[#label]))
         )
       }
     ]

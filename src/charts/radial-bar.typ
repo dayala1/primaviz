@@ -53,7 +53,9 @@
   let total-width = size + legend-width
 
   chart-container(total-width, size, title, t, extra-height: 20pt)[
-    #box(width: total-width, height: size)[
+    #grid(
+      columns: if legend-width > 0pt { (size, legend-width) } else { (size,) },
+    box(width: size, height: size)[
       // Center of chart
       #let cx = size / 2
       #let cy = size / 2
@@ -104,6 +106,7 @@
             text(size: t.legend-size, fill: t.text-color)[#lbl])
         }
       }
-    ]
+    ],
+    )
   ]
 }

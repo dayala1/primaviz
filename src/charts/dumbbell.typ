@@ -52,8 +52,8 @@
   let right-pad = 20pt
   let top-pad = 10pt
   let bottom-pad = 25pt      // room for value axis labels
-  let plot-left = label-margin
-  let plot-right = width - right-pad
+  let plot-left = label-margin + dot-size
+  let plot-right = width - right-pad - dot-size
   let plot-width = plot-right - plot-left
 
   // Colors: start uses palette color 0, end uses palette color 1

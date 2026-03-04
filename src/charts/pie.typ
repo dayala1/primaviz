@@ -40,8 +40,8 @@
   // Respect both show-legend param and theme legend-position
   let show-legend = show-legend and t.legend-position != "none"
 
-  // Calculate legend width based on longest label
-  let legend-width = 130pt
+  // Calculate legend width — scale with label count for long legends
+  let legend-width = calc.max(130pt, calc.min(180pt, n * 20pt + 40pt))
 
   // Total width: pie + gap + legend (if shown)
   let total-width = size + (if show-legend { 20pt + legend-width } else { 0pt })

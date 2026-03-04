@@ -92,7 +92,7 @@
     }
   }
 
-  let legend-height = if show-legend { 30pt } else { 0pt }
+  let legend-height = if show-legend { calc.max(30pt, calc.ceil(n / 3) * 18pt) } else { 0pt }
 
   chart-container(size, size + legend-height, title, t)[
     // Draw grid bottom-to-top, left-to-right

@@ -104,6 +104,7 @@
     radius: 4pt,
     inset: 12pt,
   )[
+    #set align(center)
     // Big number
     #text(size: 22pt, weight: "bold", fill: t.text-color)[#display-value]
 

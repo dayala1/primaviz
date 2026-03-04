@@ -29,7 +29,7 @@
   let labels = data.labels
   let series = data.series
   let n = labels.len()
-  let radius = size / 2 - 30pt  // More padding for labels
+  let radius = size / 2 - calc.max(25pt, size * 0.15)  // Scale padding with size
   let cx = size / 2
   let cy = size / 2
 
@@ -101,7 +101,8 @@
 
           // Label positioning - push labels outward based on angle
           place-polar-label(cx, cy, angle.deg(), radius + 12pt,
-            text(size: t.value-label-size, fill: t.text-color, weight: "medium")[#lbl])
+            text(size: t.value-label-size, fill: t.text-color, weight: "medium")[#lbl],
+            box-width: calc.max(40pt, size * 0.18))
         }
 
         // Draw data series
@@ -118,12 +119,14 @@
 
           let color = get-color(t, si)
 
-          // Filled area
+          // Filled area — scale stroke with chart size
+          let stroke-w = calc.max(0.5pt, size / 150)
+          let dot-r = calc.max(2pt, size / 60)
           place(
             left + top,
             polygon(
               fill: color.transparentize(100% - fill-opacity),
-              stroke: color + 2pt,
+              stroke: color + stroke-w,
               ..pts.map(p => (p.at(0), p.at(1)))
             )
           )
@@ -132,9 +135,9 @@
           for (i, pt) in pts.enumerate() {
             place(
               left + top,
-              dx: pt.at(0) - 4pt,
-              dy: pt.at(1) - 4pt,
-              circle(radius: 4pt, fill: color, stroke: white + 1pt)
+              dx: pt.at(0) - dot-r,
+              dy: pt.at(1) - dot-r,
+              circle(radius: dot-r, fill: color, stroke: white + 0.5pt)
             )
 
             // Show value near point (offset based on angle to avoid overlap)
