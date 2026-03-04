@@ -152,7 +152,7 @@
         place(
           left + bottom,
           dx: rx - 1.5em,
-          dy: 4pt,
+          dy: -1.5em,
           box(width: 3em, height: 1.5em,
             align(center + top, text(size: t.axis-label-size, fill: t.text-color)[#tick-val]))
         )
@@ -163,7 +163,7 @@
           place(
             left + bottom,
             dx: lx - 1.5em,
-            dy: 4pt,
+            dy: -1.5em,
             box(width: 3em, height: 1.5em,
               align(center + top, text(size: t.axis-label-size, fill: t.text-color)[#tick-val]))
           )

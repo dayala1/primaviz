@@ -139,14 +139,16 @@
         )
       }
 
-      // Y-axis labels (rank numbers, 1 at top, max at bottom)
-      #for rank in array.range(int(min-rank), int(max-rank) + 1) {
-        let y = pad-top + ((rank - min-rank) / rank-range) * chart-height
-        place(left + top, dx: 0pt, dy: y,
-          box(width: origin-x - 2pt, height: 0pt,
-            align(right, move(dy: -0.5em,
-              text(size: t.axis-label-size, fill: t.text-color)[#rank])))
-        )
+      // Y-axis labels (rank numbers) — only shown when series labels are off
+      #if not show-labels {
+        for rank in array.range(int(min-rank), int(max-rank) + 1) {
+          let y = pad-top + ((rank - min-rank) / rank-range) * chart-height
+          place(left + top, dx: 0pt, dy: y,
+            box(width: origin-x - 2pt, height: 0pt,
+              align(right, move(dy: -0.5em,
+                text(size: t.axis-label-size, fill: t.text-color)[#rank])))
+          )
+        }
       }
     ]
 

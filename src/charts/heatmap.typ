@@ -266,7 +266,7 @@
         place(
           left + top,
           dx: label-area + j * cell-size + cell-size / 2,
-          dy: label-area - 2pt,
+          dy: label-area - 12pt,
           rotate(-45deg, origin: bottom + left, text(size: t.axis-label-size, fill: t.text-color)[#lbl])
         )
       }

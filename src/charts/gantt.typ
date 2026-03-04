@@ -83,16 +83,28 @@
         }
       }
 
-      // Time labels along the bottom
+      // Time labels along the bottom — rotate when crowded
+      #let rotate-labels = time-count > 8
       #for (i, lbl) in time-labels.enumerate() {
         if i < time-count {
           let x = label-area + i * col-width
-          place(
-            left + top,
-            dx: x + 2pt,
-            dy: body-height - 18pt,
-            text(size: t.axis-label-size, fill: t.text-color)[#lbl],
-          )
+          if rotate-labels {
+            place(
+              left + top,
+              dx: x + 2pt,
+              dy: body-height - 18pt,
+              rotate(-45deg, origin: top + left,
+                text(size: t.axis-label-size, fill: t.text-color)[#lbl]),
+            )
+          } else {
+            place(
+              left + top,
+              dx: x,
+              dy: body-height - 18pt,
+              box(width: col-width,
+                align(center, text(size: t.axis-label-size, fill: t.text-color)[#lbl])),
+            )
+          }
         }
       }
 
