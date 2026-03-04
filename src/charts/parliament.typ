@@ -127,40 +127,39 @@
     }
   }
 
-  // Calculate legend height
-  let legend-height = if show-legend { 12pt * n-parties + 20pt } else { 0pt }
   let chart-height = radius + dot-r
-  let total-height = chart-height + legend-height
+  let legend-height = if show-legend { calc.ceil(n-parties / 3) * 16pt + 10pt } else { 0pt }
 
-  let legend-width = 140pt
-  let total-width = size + (if show-legend { 20pt + legend-width } else { 0pt })
+  chart-container(size, chart-height + legend-height, title, t, extra-height: 40pt)[
+    // Hemicycle
+    #box(width: size, height: chart-height)[
+      #for (i, pos) in dots.enumerate() {
+        if i < dot-colors.len() {
+          place(
+            left + top,
+            dx: pos.at(0) - dot-r,
+            dy: pos.at(1) - dot-r,
+            circle(radius: dot-r, fill: dot-colors.at(i), stroke: none)
+          )
+        }
+      }
+    ]
 
-  chart-container(total-width, total-height, title, t, extra-height: 40pt)[
-    #grid(
-      columns: if show-legend { (size, legend-width) } else { (size,) },
-      column-gutter: 20pt,
-
-      // Hemicycle
-      box(width: size, height: chart-height)[
-        #for (i, pos) in dots.enumerate() {
-          if i < dot-colors.len() {
-            place(
-              left + top,
-              dx: pos.at(0) - dot-r,
-              dy: pos.at(1) - dot-r,
-              circle(radius: dot-r, fill: dot-colors.at(i), stroke: none)
-            )
+    // Legend below hemicycle — compact horizontal flow
+    #if show-legend {
+      set text(size: t.axis-label-size, fill: t.text-color)
+      box(width: size, inset: (top: 6pt))[
+        #set align(center)
+        #for (i, lbl) in labels.enumerate() {
+          if values.at(i) > 0 {
+            box(baseline: 2pt, inset: (x: 4pt, y: 1pt))[
+              #box(width: 8pt, height: 8pt, fill: get-color(t, i), radius: 2pt, baseline: 1pt)
+              #h(3pt)
+              #lbl (#{ str(values.at(i)) })
+            ]
           }
         }
-      ],
-
-      // Legend
-      if show-legend {
-        let legend-entries = labels.enumerate().filter(((i, _)) => values.at(i) > 0).map(((i, lbl)) => {
-          str(lbl) + " (" + str(values.at(i)) + ")"
-        })
-        draw-legend-vertical(legend-entries, t, width: legend-width)
-      }
-    )
+      ]
+    }
   ]
 }
