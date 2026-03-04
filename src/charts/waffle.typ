@@ -1,6 +1,6 @@
 // waffle.typ - Waffle chart (grid of squares showing proportions)
 #import "../theme.typ": resolve-theme, get-color
-#import "../util.typ": normalize-data
+#import "../util.typ": normalize-data, nonzero
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-auto
@@ -44,8 +44,7 @@
   let total-cells = rows * cols
 
   // Normalize values to percentages of total-cells
-  let raw-sum = values.sum()
-  if raw-sum == 0 { raw-sum = 1 }  // division-by-zero guard
+  let raw-sum = nonzero(values.sum())
   let cell-counts = values.map(v => int(calc.round(v / raw-sum * total-cells)))
 
   // Adjust rounding so cell-counts sum to exactly total-cells

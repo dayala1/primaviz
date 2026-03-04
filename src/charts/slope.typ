@@ -1,5 +1,6 @@
 // slope.typ - Slope chart (two-period comparison)
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-slope-data
 #import "../primitives/container.typ": chart-container
 
@@ -42,8 +43,7 @@
   let all-values = start-values + end-values
   let max-val = calc.max(..all-values)
   let min-val = calc.min(..all-values)
-  let val-range = max-val - min-val
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(max-val - min-val)
 
   // Layout constants
   let label-margin = 70pt   // space for labels on each side

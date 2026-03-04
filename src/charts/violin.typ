@@ -1,5 +1,6 @@
 // violin.typ - Violin plot (distribution shape visualization)
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-violin-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
@@ -98,8 +99,7 @@
       if v > global-max { global-max = v }
     }
   }
-  let val-range = global-max - global-min
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(global-max - global-min)
   let padding = val-range * 0.15
   let y-min = global-min - padding
   let y-max = global-max + padding
@@ -110,16 +110,14 @@
     let nn = ds.len()
     let sd = std-dev(ds)
     // Silverman's rule of thumb
-    let bw = if bandwidth != auto { bandwidth } else {
+    let bw = nonzero(if bandwidth != auto { bandwidth } else {
       1.06 * sd * calc.pow(nn, -0.2)
-    }
-    if bw == 0 { bw = 1.0 }
+    }, fallback: 1.0)
 
     let d-min = ds.first()
     let d-max = ds.last()
     // Extend range slightly beyond data for smooth tails
-    let ext = (d-max - d-min) * 0.1
-    if ext == 0 { ext = 1.0 }
+    let ext = nonzero((d-max - d-min) * 0.1, fallback: 1.0)
     let lo = d-min - ext
     let hi = d-max + ext
     let step = (hi - lo) / (samples - 1)
@@ -154,7 +152,7 @@
       global-max-density = kde.max-density
     }
   }
-  if global-max-density == 0 { global-max-density = 1.0 }
+  let global-max-density = nonzero(global-max-density, fallback: 1.0)
 
   // ── Drawing ───────────────────────────────────────────────────────────
   let cl = cartesian-layout(width, height, t)
@@ -185,8 +183,7 @@
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2 - 20pt, origin-y / 2, t)
 
       // Helper: map data value to y-coordinate
-      #let y-range = y-max - y-min
-      #if y-range == 0 { y-range = 1 }
+      #let y-range = nonzero(y-max - y-min)
       #let map-y(val) = {
         y-start + chart-height - ((val - y-min) / y-range) * chart-height
       }

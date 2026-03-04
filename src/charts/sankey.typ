@@ -1,5 +1,6 @@
 // sankey.typ - Sankey / flow diagrams
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-sankey-data
 #import "../primitives/container.typ": chart-container
 
@@ -63,8 +64,7 @@
     }
   }
 
-  let max-layer = calc.max(..layer)
-  if max-layer == 0 { max-layer = 1 }
+  let max-layer = nonzero(calc.max(..layer))
   let num-layers = max-layer + 1
 
   // Group nodes by layer

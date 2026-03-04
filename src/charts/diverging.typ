@@ -1,5 +1,6 @@
 // diverging.typ - Diverging bar chart (bars extend left/right from center axis)
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-diverging-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-auto
@@ -44,8 +45,7 @@
 
   // Find the max value across both sides for proportional scaling
   let all-values = (..left-values, ..right-values)
-  let max-val = calc.max(..all-values)
-  if max-val == 0 { max-val = 1 }
+  let max-val = nonzero(calc.max(..all-values))
 
   // Layout constants
   let label-area = 80pt        // Space for category labels on the left

@@ -1,5 +1,6 @@
 // wordcloud.typ - Word cloud chart (flowing text layout)
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-wordcloud-data
 #import "../primitives/container.typ": chart-container
 
@@ -41,8 +42,7 @@
   // Find weight range for size mapping
   let max-weight = sorted-words.at(0).weight
   let min-weight = sorted-words.last().weight
-  let weight-range = max-weight - min-weight
-  if weight-range == 0 { weight-range = 1 }
+  let weight-range = nonzero(max-weight - min-weight)
 
   // Font weight alternation for visual variety
   let font-weights = ("bold", "regular", "bold", "medium", "regular")

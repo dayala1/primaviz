@@ -56,6 +56,14 @@
   }
 }
 
+/// Returns the value unchanged if non-zero, otherwise returns `fallback`.
+/// Prevents division-by-zero in range calculations.
+///
+/// - val (int, float): Value to check
+/// - fallback (int, float): Returned when `val` is zero
+/// -> int, float
+#let nonzero(val, fallback: 1) = if val == 0 { fallback } else { val }
+
 /// Clamps a numeric value to the range [lo, hi].
 ///
 /// - val (int, float): Value to clamp

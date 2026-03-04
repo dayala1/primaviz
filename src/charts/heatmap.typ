@@ -1,6 +1,6 @@
 // heatmap.typ - Heatmap/matrix charts
 #import "../theme.typ": resolve-theme, get-color
-#import "../util.typ": lerp-color, heat-color
+#import "../util.typ": lerp-color, heat-color, nonzero
 #import "../validate.typ": validate-heatmap-data, validate-calendar-data, validate-correlation-data
 #import "../primitives/container.typ": chart-container
 
@@ -36,8 +36,7 @@
   let all-vals = values.flatten()
   let min-val = calc.min(..all-vals)
   let max-val = calc.max(..all-vals)
-  let val-range = max-val - min-val
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(max-val - min-val)
 
   let row-label-width = 60pt
   let col-label-height = 40pt
@@ -163,8 +162,7 @@
   // Find min/max
   let min-val = calc.min(..values)
   let max-val = calc.max(..values)
-  let val-range = max-val - min-val
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(max-val - min-val)
 
   // Assume dates are in order and calculate grid
   // For simplicity, we'll arrange in a 7-row (days of week) grid

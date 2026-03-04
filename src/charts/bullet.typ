@@ -3,6 +3,7 @@
 // with qualitative ranges (poor/satisfactory/good).
 
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-bullet-data, validate-bullet-charts-data
 #import "../primitives/container.typ": chart-container
 
@@ -34,8 +35,7 @@
   let t = resolve-theme(theme)
   let bar-color = get-color(t, 0)
 
-  let max-range = ranges.last()
-  if max-range == 0 { max-range = 1 }
+  let max-range = nonzero(ranges.last())
 
   // Qualitative range shades (darkest = poor, lightest = good)
   let is-dark = t.background != none and t.background != white

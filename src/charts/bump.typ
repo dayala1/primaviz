@@ -1,5 +1,6 @@
 // bump.typ - Bump chart (multi-period ranking chart)
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-series-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles
@@ -47,8 +48,7 @@
   let all-values = series.map(s => s.values).flatten()
   let min-rank = calc.min(..all-values)
   let max-rank = calc.max(..all-values)
-  let rank-range = max-rank - min-rank
-  if rank-range == 0 { rank-range = 1 }
+  let rank-range = nonzero(max-rank - min-rank)
 
   let cl = cartesian-layout(width, height, t)
 

@@ -1,6 +1,6 @@
 // radial-bar.typ - Radial bar chart (bars radiating outward from center in a circle)
 #import "../theme.typ": resolve-theme, get-color
-#import "../util.typ": normalize-data
+#import "../util.typ": normalize-data, nonzero
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": annular-wedge-points, place-polar-label, place-donut-hole, separator-stroke
@@ -36,8 +36,7 @@
   let n = values.len()
   if n == 0 { return }
 
-  let max-val = calc.max(..values)
-  if max-val == 0 { max-val = 1 }
+  let max-val = nonzero(calc.max(..values))
 
   let radius = size / 2
   let r-inner = radius * inner-radius

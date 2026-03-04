@@ -1,5 +1,6 @@
 // boxplot.typ - Box-and-whisker plot
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-boxplot-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
@@ -92,8 +93,7 @@
 
         // Helper: map a data value to y-coordinate
         // y = y-start + chart-height - ((val - y-min) / (y-max - y-min)) * chart-height
-        let y-range = y-max - y-min
-        if y-range == 0 { y-range = 1 }
+        let y-range = nonzero(y-max - y-min)
         let map-y(val) = {
           y-start + chart-height - ((val - y-min) / y-range) * chart-height
         }

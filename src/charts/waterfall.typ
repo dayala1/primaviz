@@ -1,6 +1,6 @@
 // waterfall.typ - Waterfall chart (bridge chart)
 #import "../theme.typ": resolve-theme, get-color
-#import "../util.typ": normalize-data, format-number
+#import "../util.typ": normalize-data, format-number, nonzero
 #import "../validate.typ": validate-waterfall-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
@@ -94,8 +94,7 @@
   let max-val = calc.max(..all-points)
 
   // Add some padding to the range
-  let val-range = max-val - min-val
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(max-val - min-val)
   let padding = val-range * 0.1
   let y-min = min-val - padding
   let y-max = max-val + padding

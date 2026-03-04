@@ -4,7 +4,7 @@
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-grid, draw-axis-titles
 #import "../primitives/legend.typ": draw-legend-auto
-#import "../util.typ": format-number
+#import "../util.typ": format-number, nonzero
 
 #let dual-axis-chart(
   data,
@@ -39,14 +39,12 @@
   // Compute left axis range
   let l-min = calc.min(..left-series.values)
   let l-max = calc.max(..left-series.values)
-  let l-range = l-max - l-min
-  if l-range == 0 { l-range = 1 }
+  let l-range = nonzero(l-max - l-min)
 
   // Compute right axis range
   let r-min = calc.min(..right-series.values)
   let r-max = calc.max(..right-series.values)
-  let r-range = r-max - r-min
-  if r-range == 0 { r-range = 1 }
+  let r-range = nonzero(r-max - r-min)
 
   let cl = cartesian-layout(width, height, t, extra-left: 10pt, extra-right: 10pt)
 

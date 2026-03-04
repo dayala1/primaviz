@@ -1,5 +1,6 @@
 // scatter.typ - Scatter plot and bubble chart
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
@@ -51,10 +52,8 @@
   let y-max = calc.max(..y-vals)
 
   // Add padding to ranges
-  let x-range = x-max - x-min
-  let y-range = y-max - y-min
-  if x-range == 0 { x-range = 1 }
-  if y-range == 0 { y-range = 1 }
+  let x-range = nonzero(x-max - x-min)
+  let y-range = nonzero(y-max - y-min)
 
   let point-color = if color != none { color } else { get-color(t, 0) }
 
@@ -148,10 +147,8 @@
   let y-min = calc.min(..y-vals)
   let y-max = calc.max(..y-vals)
 
-  let x-range = x-max - x-min
-  let y-range = y-max - y-min
-  if x-range == 0 { x-range = 1 }
-  if y-range == 0 { y-range = 1 }
+  let x-range = nonzero(x-max - x-min)
+  let y-range = nonzero(y-max - y-min)
 
   let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
@@ -251,12 +248,9 @@
   let size-min = calc.min(..size-vals)
   let size-max = calc.max(..size-vals)
 
-  let x-range = x-max - x-min
-  let y-range = y-max - y-min
-  let size-range = size-max - size-min
-  if x-range == 0 { x-range = 1 }
-  if y-range == 0 { y-range = 1 }
-  if size-range == 0 { size-range = 1 }
+  let x-range = nonzero(x-max - x-min)
+  let y-range = nonzero(y-max - y-min)
+  let size-range = nonzero(size-max - size-min)
 
   let bubble-color = if color != none { color } else { get-color(t, 0) }
 

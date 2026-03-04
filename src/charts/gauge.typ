@@ -1,5 +1,6 @@
 // gauge.typ - Gauge/dial and progress indicators
 #import "../theme.typ": resolve-theme, get-color
+#import "../util.typ": nonzero
 #import "../validate.typ": validate-number, validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": pie-slice-points, place-donut-hole
@@ -36,8 +37,7 @@
   let cx = size / 2
   let cy = size / 2 + 10pt
 
-  let val-range = max-val - min-val
-  if val-range == 0 { val-range = 1 }
+  let val-range = nonzero(max-val - min-val)
   let normalized = (value - min-val) / val-range
   normalized = calc.max(0, calc.min(1, normalized))  // clamp 0-1
 
@@ -344,8 +344,7 @@
   let values = data.values
   let n = labels.len()
 
-  let actual-max = if max-val == auto { calc.max(..values) } else { max-val }
-  if actual-max == 0 { actual-max = 1 }
+  let actual-max = nonzero(if max-val == auto { calc.max(..values) } else { max-val })
 
   box(width: width)[
     #if title != none {

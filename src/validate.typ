@@ -271,18 +271,8 @@
     message: chart-name + ": labels (" + str(data.labels.len()) + ") and end-values (" + str(data.end-values.len()) + ") must have same length")
 }
 
-// Validate dumbbell data (labels + start-values + end-values, same length)
-#let validate-dumbbell-data(data, chart-name) = {
-  assert(type(data) == dictionary, message: chart-name + ": data must be a dictionary")
-  assert("labels" in data, message: chart-name + ": data must have 'labels' key")
-  assert("start-values" in data, message: chart-name + ": data must have 'start-values' key")
-  assert("end-values" in data, message: chart-name + ": data must have 'end-values' key")
-  assert(data.labels.len() > 0, message: chart-name + ": labels must not be empty")
-  assert(data.labels.len() == data.start-values.len(),
-    message: chart-name + ": labels (" + str(data.labels.len()) + ") and start-values (" + str(data.start-values.len()) + ") must have same length")
-  assert(data.labels.len() == data.end-values.len(),
-    message: chart-name + ": labels (" + str(data.labels.len()) + ") and end-values (" + str(data.end-values.len()) + ") must have same length")
-}
+// Validate dumbbell data — same shape as slope data
+#let validate-dumbbell-data = validate-slope-data
 
 // Validate diverging bar data (labels + left-values + right-values)
 #let validate-diverging-data(data, chart-name) = {
