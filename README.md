@@ -19,33 +19,6 @@ All 51 chart types across 7 pages — see [`examples/showcase.typ`](examples/sho
 ![Showcase Page 6](screenshots/showcase/showcase-6.png)
 ![Showcase Page 7](screenshots/showcase/showcase-7.png)
 
-## Per-Chart Demos
-
-Each demo shows a chart family in a 2×2 grid with light/dark themes and variations.
-See [`examples/demos/`](examples/demos/) for the source files.
-
-| Demo | Charts shown |
-|---|---|
-| ![bar](screenshots/demo/demo-bar.png) | `bar-chart`, `horizontal-bar-chart` (light + dark) |
-| ![bar-multi](screenshots/demo/demo-bar-multi.png) | `grouped-bar-chart`, `stacked-bar-chart` (light + dark) |
-| ![bar-advanced](screenshots/demo/demo-bar-advanced.png) | `grouped-stacked-bar-chart`, `diverging-bar-chart` (light + dark) |
-| ![line](screenshots/demo/demo-line.png) | `line-chart`, `multi-line-chart` (light + dark) |
-| ![area](screenshots/demo/demo-area.png) | `area-chart`, `stacked-area-chart` (light + dark) |
-| ![dual-axis](screenshots/demo/demo-dual-axis.png) | `dual-axis-chart` (light, dark, presentation, minimal) |
-| ![pie](screenshots/demo/demo-pie.png) | `pie-chart`, donut mode (light + dark) |
-| ![radar](screenshots/demo/demo-radar.png) | `radar-chart` (light, dark, 3-series, accessible) |
-| ![scatter](screenshots/demo/demo-scatter.png) | `scatter-plot`, `multi-scatter-plot`, `bubble-chart` |
-| ![gauge](screenshots/demo/demo-gauge.png) | `gauge-chart`, `progress-bar`, `circular-progress` |
-| ![heatmap](screenshots/demo/demo-heatmap.png) | `heatmap`, `calendar-heatmap`, `correlation-matrix` |
-| ![statistical](screenshots/demo/demo-statistical.png) | `histogram`, `box-plot`, `violin-plot`, `waterfall-chart` |
-| ![comparison](screenshots/demo/demo-comparison.png) | `slope-chart`, `dumbbell-chart`, `lollipop-chart`, `bullet-chart` |
-| ![flow](screenshots/demo/demo-flow.png) | `sankey-chart`, `gantt-chart`, `timeline-chart`, `chord-diagram` |
-| ![misc](screenshots/demo/demo-misc.png) | `waffle-chart`, `parliament-chart`, `radial-bar-chart`, `sunburst-chart` |
-| ![dashboard](screenshots/demo/demo-dashboard.png) | `metric-row`, `word-cloud`, sparklines table, `progress-bars` |
-| ![rings](screenshots/demo/demo-rings.png) | `ring-progress`, `treemap` (light + dark) |
-| ![bump](screenshots/demo/demo-bump.png) | `bump-chart`, `funnel-chart` (light + dark) |
-| ![themes](screenshots/demo/demo-themes.png) | Theme comparison across all 6 presets + `with-theme` |
-
 ## Examples
 
 | File | Description |
