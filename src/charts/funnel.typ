@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, format-number
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/layout.typ": label-fits-inside
+#import "../primitives/layout.typ": label-fits-inside, try-fit-label
 
 /// Renders a funnel chart for visualizing process or conversion stages.
 ///
@@ -106,16 +106,17 @@
           let avail-w = inset-half * 2
           let avail-h = seg-height
 
-          // Check if label fits inside segment
+          // Check if label fits inside segment (try shrinking font first)
           let has-detail = n <= 9 and detail != ""
-          let detail-size = label-size * 0.85
-          let label-inside = label-fits-inside(avail-w, avail-h, label-size, lbl-len)
+          let fit = try-fit-label(avail-w, avail-h, label-size, lbl-len)
 
-          if label-inside {
+          if fit.fits {
+            let label-size = fit.size
+            let detail-size = label-size * 0.85
             // Determine if detail also fits (combined height)
             let detail-len = detail.len()
-            let detail-fits = has-detail and label-fits-inside(avail-w, avail-h, detail-size, detail-len)
-            let show-detail = has-detail and detail-fits
+            let detail-fit = if has-detail { try-fit-label(avail-w, avail-h, detail-size, detail-len) } else { (fits: false, size: detail-size) }
+            let show-detail = has-detail and detail-fit.fits
             let block-h = if show-detail { label-size + detail-size + 2pt } else { label-size + 2pt }
             let start-y = mid-y - block-h / 2
 
@@ -150,7 +151,7 @@
               place(left + top,
                 line(start: (leader-start-x, mid-y),
                      end: (ext-label-x - 1pt, mid-y),
-                     stroke: 0.5pt + luma(140)))
+                     stroke: 0.5pt + t.text-color-light))
               // Label
               place(
                 left + top,
