@@ -2,14 +2,14 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Typst](https://img.shields.io/badge/typst-%3E%3D0.12.0-239dad)](https://github.com/typst/typst)
-[![Charts](https://img.shields.io/badge/chart_types-51-orange)](screenshots/)
+[![Charts](https://img.shields.io/badge/chart_types-50%2B-orange)](screenshots/)
 [![Pure Typst](https://img.shields.io/badge/dependencies-zero-brightgreen)]()
 
 A charting library for [Typst](https://github.com/typst/typst) built entirely with native primitives (`rect`, `circle`, `line`, `polygon`, `place`). No external dependencies required.
 
 ## Gallery
 
-All 51 chart types across 7 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
+All 50+ chart types across 7 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
 
 ![Showcase Page 1](screenshots/showcase/showcase-1.png)
 ![Showcase Page 2](screenshots/showcase/showcase-2.png)
@@ -27,10 +27,12 @@ All 51 chart types across 7 pages — see [`examples/showcase.typ`](examples/sho
 | [`examples/showcase.typ`](examples/showcase.typ) | Compact 7-page showcase of all chart types (dark theme) |
 | [`examples/demo.typ`](examples/demo.typ) | Comprehensive demo with all features, themes, and data loading |
 
-Sample data files used by `demo.typ`:
-- [`data/characters.json`](data/characters.json) — RPG character stats
-- [`data/events.json`](data/events.json) — Conference/event data
-- [`data/analytics.json`](data/analytics.json) — Dashboard analytics data
+Shared datasets in [`data/`](data/) used by both demo and showcase:
+- [`data/sales.json`](data/sales.json) — SaaS startup metrics
+- [`data/codebase.json`](data/codebase.json) — Open source project stats
+- [`data/league.json`](data/league.json) — Soccer league data
+- [`data/rpg.json`](data/rpg.json) — D&D campaign tracker
+- [`data/words.json`](data/words.json) — Data visualization vocabulary
 
 ```bash
 just demos      # Compile all per-chart demos
@@ -40,7 +42,7 @@ just demo       # Compile the comprehensive demo
 
 ## Features
 
-- **51 chart types** for data visualization
+- **50+ chart types** for data visualization
 - **JSON data input** — load data directly from JSON files
 - **Theme system** — preset themes, custom overrides, and `with-theme()` for document-wide defaults
 - **Smart label placement** — automatic fit detection, font shrinking, and greedy deconfliction for overlapping labels

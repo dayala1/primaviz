@@ -4,6 +4,7 @@
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
+#import "../primitives/legend.typ": draw-legend
 
 /// Renders a waterfall (bridge) chart showing cumulative effect of positive and negative values.
 ///
@@ -32,6 +33,7 @@
   positive-color: none,
   negative-color: none,
   total-color: none,
+  show-legend: false,
   x-label: none,
   y-label: none,
   theme: none,
@@ -193,5 +195,13 @@
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t)
     ]
+
+    // Color key legend
+    #if show-legend {
+      draw-legend(
+        ((name: "Increase", color: pos-color), (name: "Decrease", color: neg-color), (name: "Total", color: tot-color)),
+        t,
+      )
+    }
   ]
 }

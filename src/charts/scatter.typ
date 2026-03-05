@@ -5,7 +5,7 @@
 #import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data, validate-multi-bubble-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
-#import "../primitives/legend.typ": draw-legend-auto
+#import "../primitives/legend.typ": draw-legend-auto, draw-size-legend
 #import "../primitives/annotations.typ": draw-annotations
 
 /// Renders a scatter plot of x-y data points.
@@ -217,6 +217,7 @@
   title: none,
   x-label: none,
   y-label: none,
+  size-label: none,
   min-radius: 5pt,
   max-radius: 30pt,
   show-grid: auto,
@@ -383,6 +384,16 @@
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
+
+    // Size legend below chart
+    #if size-label != none {
+      let ref-sizes = (
+        (size-max, str(calc.round(size-max))),
+        (calc.round(size-max * 0.5), str(calc.round(size-max * 0.5))),
+        (calc.round(size-max * 0.15), str(calc.round(size-max * 0.15))),
+      )
+      draw-size-legend(ref-sizes, max-radius, size-max, t, title: size-label)
+    }
   ]
 }
 
@@ -409,6 +420,7 @@
   title: none,
   x-label: none,
   y-label: none,
+  size-label: none,
   min-radius: 4pt,
   max-radius: 25pt,
   show-grid: auto,
@@ -491,5 +503,15 @@
 
     // Legend
     #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
+
+    // Size legend
+    #if size-label != none {
+      let ref-sizes = (
+        (size-max, str(calc.round(size-max))),
+        (calc.round(size-max * 0.5), str(calc.round(size-max * 0.5))),
+        (calc.round(size-max * 0.15), str(calc.round(size-max * 0.15))),
+      )
+      draw-size-legend(ref-sizes, max-radius, size-max, t, title: size-label)
+    }
   ]
 }

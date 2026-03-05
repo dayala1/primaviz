@@ -6,14 +6,14 @@
 // Wraps chart body in a box with optional background/border and title.
 // Adds inset padding when background is set (dark themes, etc.) to prevent content
 // from touching the container edges.
-#let chart-container(width, height, title, theme, extra-height: 0pt, legend: none, body) = {
+#let chart-container(width, height, title, theme, extra-height: 0pt, legend: none, legend-width: 120pt, body) = {
   let has-bg = theme.background != none
   let pad = if has-bg { 8pt } else { 0pt }
   let title-overhead = if title != none { theme.title-size + theme.title-gap + 4pt } else { 0pt }
   let lp = theme.legend-position
   let side-legend = (lp == "right" or lp == "left") and legend != none
   box(
-    width: if side-legend { width + 120pt + 2 * pad } else { width + 2 * pad },
+    width: if side-legend { width + legend-width + 2 * pad } else { width + 2 * pad },
     height: height + extra-height + title-overhead + 2 * pad,
     fill: theme.background,
     stroke: theme.border,

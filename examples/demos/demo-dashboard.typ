@@ -1,6 +1,6 @@
 // Dashboard: metric-row, word-cloud, sparklines-table, progress-bars
 #import "../../src/lib.typ": *
-#import "../demo-data.typ": sales, codebase
+#import "../demo-data.typ": sales, words
 #set page(margin: 0.5cm, paper: "a4")
 #set text(size: 8pt)
 
@@ -16,7 +16,7 @@
       width: 250pt, gap: 5pt, theme: lt,
     )
   ],
-  word-cloud(codebase.words,
+  word-cloud(words,
     width: W, height: 300pt, title: "word-cloud (dark, circle)", shape: "circle", theme: dk,
   ),
   [

@@ -2,7 +2,7 @@
 
 ## Project: Primaviz
 
-Pure-Typst charting library — 51 chart types, 6 theme presets, zero dependencies. Built on native Typst primitives (`rect`, `circle`, `line`, `polygon`, `place`).
+Pure-Typst charting library — 50+ chart types, 6 theme presets, zero dependencies. Built on native Typst primitives (`rect`, `circle`, `line`, `polygon`, `place`).
 
 - **Source:** `src/lib.typ` re-exports all charts, themes, and utilities
 - **Charts:** `src/charts/*.typ` — one module per chart family (33 modules)

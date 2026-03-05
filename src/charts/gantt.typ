@@ -3,6 +3,7 @@
 #import "../validate.typ": validate-gantt-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/layout.typ": density-skip, font-for-space
+#import "../primitives/legend.typ": draw-legend
 
 /// Renders a Gantt chart — a timeline bar chart for project scheduling.
 ///
@@ -29,6 +30,7 @@
   bar-height: 18pt,
   gap: 4pt,
   show-grid: true,
+  show-legend: false,
   today: none,
   theme: none,
 ) = context {
@@ -180,5 +182,13 @@
         )
       }
     ]
+
+    // Group legend
+    #if show-legend and has-groups {
+      draw-legend(
+        group-names.enumerate().map(((i, g)) => (name: g, color: get-color(t, i))),
+        t,
+      )
+    }
   ]
 }
