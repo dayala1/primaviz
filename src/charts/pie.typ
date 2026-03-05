@@ -62,8 +62,6 @@
       box(width: size, height: size)[
         #let center-x = radius
         #let center-y = radius
-        #let current-angle = 0deg
-
         #let current-deg = 0
 
         #for (i, val) in values.enumerate() {

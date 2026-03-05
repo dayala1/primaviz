@@ -210,12 +210,13 @@
         }
       }
     }
-    // Rebuild from roots (re-read after children attached)
+    // Recursive rebuild: re-resolve each node's children from by-name
+    // to pick up grandchildren etc. Typst supports recursive let-functions.
     let rebuild(name) = {
       let node = by-name.at(name)
       if node.children.len() > 0 {
-        // Re-resolve children from by-name to get their children too
-        (name: node.name, value: node.value, children: node.children.map(c => by-name.at(c.name)))
+        let resolved = node.children.map(c => rebuild(c.name))
+        (name: node.name, value: node.value, children: resolved)
       } else {
         (name: node.name, value: node.value)
       }
@@ -223,7 +224,6 @@
     if roots.len() == 1 {
       rebuild(roots.at(0))
     } else {
-      // Multiple roots — wrap in synthetic root
       (name: "root", value: roots.map(r => by-name.at(r).value).sum(), children: roots.map(r => rebuild(r)))
     }
   } else {

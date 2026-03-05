@@ -64,9 +64,10 @@ push: build
     if ! git diff --cached --quiet; then
         git commit -m "Regenerate screenshots"
     fi
-    if ! git diff --quiet || ! git diff --cached --quiet; then
-        echo "ERROR: unstaged/uncommitted changes remain — commit before pushing"
-        git status --short
+    # Check only tracked files (build generates untracked PDFs)
+    if git diff --name-only HEAD | grep -qv '\.pdf$'; then
+        echo "ERROR: uncommitted tracked changes remain — commit before pushing"
+        git diff --name-only HEAD | grep -v '\.pdf$'
         exit 1
     fi
     git push

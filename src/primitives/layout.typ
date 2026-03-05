@@ -119,7 +119,6 @@
     // Clamp to bounds
     let ly = calc.max(bounds.top, calc.min(bounds.bottom - p.h, ly))
     let lx = calc.max(bounds.left, calc.min(bounds.right - p.w, p.lx))
-    let entry = p
     let entry = (:)
     for (k, v) in p.pairs() {
       if k == "lx" { entry.insert(k, lx) }
