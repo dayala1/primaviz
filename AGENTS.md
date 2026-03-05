@@ -23,6 +23,10 @@ Pure-Typst charting library — 50+ chart types, 6 theme presets, zero dependenc
 3. Visually inspect each page for layout breakage — overlapping labels, legends clipping into adjacent cells, axis titles overlapping data
 4. The showcase uses a tight 2-col × 4-row grid on A4 with small charts (250×95pt). Changes that look fine on large standalone charts can break the compact showcase layout. Always check both.
 
+## Pull Request Hygiene
+
+When adding commits to an open PR, **always update the PR title and body** to reflect the full scope of changes. Use `gh pr edit` to keep the description current. The PR body should be the authoritative summary of what's in the branch.
+
 ## Issue Tracking
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
