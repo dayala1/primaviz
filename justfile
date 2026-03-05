@@ -52,6 +52,26 @@ screenshots:
 check: demo demos showcase test
     @echo "All compilations passed"
 
+# Full build: compile everything, regenerate screenshots
+build: check screenshots
+    @echo "Build complete — all artifacts up to date"
+
+# Build everything, stage screenshots, commit if dirty, push
+push: build
+    #!/usr/bin/env bash
+    set -e
+    git add screenshots/
+    if ! git diff --cached --quiet; then
+        git commit -m "Regenerate screenshots"
+    fi
+    if ! git diff --quiet || ! git diff --cached --quiet; then
+        echo "ERROR: unstaged/uncommitted changes remain — commit before pushing"
+        git status --short
+        exit 1
+    fi
+    git push
+    echo "Pushed $(git rev-parse --abbrev-ref HEAD) to origin"
+
 # Open the demo PDF
 open: demo
     xdg-open examples/demo.pdf 2>/dev/null || open examples/demo.pdf
@@ -66,8 +86,8 @@ dev:
 clean:
     rm -f examples/*.pdf examples/demos/*.pdf tests/*.pdf
 
-# Full release prep: test, screenshots, clean build artifacts
-release: check screenshots
+# Full release prep: build everything, verify clean
+release: build
     @echo "Release artifacts ready"
 
 # Show project stats
