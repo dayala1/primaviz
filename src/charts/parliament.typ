@@ -4,6 +4,7 @@
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-vertical
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a parliament (hemicycle) chart — a semicircle of dots showing seat distribution.
 ///
@@ -27,6 +28,8 @@
   show-legend: true,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-simple-data(data, "parliament-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -162,4 +165,5 @@
       ]
     }
   ]
+  })
 }

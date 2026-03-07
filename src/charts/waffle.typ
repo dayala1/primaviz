@@ -4,6 +4,7 @@
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-auto
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a waffle chart — a grid of squares where each square represents
 /// a unit or percentage of the total. Commonly used in infographics to
@@ -35,6 +36,8 @@
   show-values: true,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-simple-data(data, "waffle-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -131,4 +134,5 @@
     ]
 
   ]
+  })
 }

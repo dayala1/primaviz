@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, nonzero
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/layout.typ": try-fit-label
+#import "../primitives/layout.typ": try-fit-label, resolve-size
 
 /// Renders a treemap chart displaying hierarchical data as nested rectangles
 /// sized proportionally to their values.
@@ -27,6 +27,8 @@
   gap: 1.5pt,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "treemap")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -228,4 +230,5 @@
       }
     ]
   ]
+  })
 }

@@ -3,6 +3,7 @@
 #import "../util.typ": nonzero
 #import "../validate.typ": validate-sankey-data
 #import "../primitives/container.typ": chart-container
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a Sankey (flow) diagram showing quantities flowing between nodes.
 ///
@@ -29,6 +30,8 @@
   show-values: false,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-sankey-data(data, "sankey-chart")
   let t = _resolve-ctx(theme)
 
@@ -219,4 +222,5 @@
       }
     ]
   ]
+  })
 }

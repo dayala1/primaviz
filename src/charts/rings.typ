@@ -2,6 +2,7 @@
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../validate.typ": validate-ring-data
 #import "../primitives/container.typ": chart-container
+#import "../primitives/layout.typ": resolve-size
 
 /// Concentric ring progress chart (fitness rings).
 /// Outermost ring = first entry, innermost = last.
@@ -16,6 +17,8 @@
   show-values: true,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-ring-data(entries, "ring-progress")
   let t = _resolve-ctx(theme)
   let n = entries.len()
@@ -146,4 +149,5 @@
       }
     ]
   ]
+  })
 }

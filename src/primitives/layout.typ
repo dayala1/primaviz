@@ -1,5 +1,23 @@
 // layout.typ - Layout utility functions for chart sizing and label placement
 
+/// Resolves width and height to absolute lengths using the available region size.
+/// Call inside `layout(size => ...)`. Handles ratio (100%), relative (100% - 5pt),
+/// and absolute (300pt) values.
+///
+/// - width (length, ratio, relative): Width to resolve
+/// - height (length, ratio, relative): Height to resolve
+/// - size (dictionary): Available region from `layout(size => ...)`
+/// -> dictionary with `width` and `height` keys
+#let resolve-size(width, height, size) = {
+  let resolve(val, avail) = {
+    if type(val) == length { val }
+    else if type(val) == ratio { avail * (val / 100%) }
+    else if type(val) == relative { val.length + avail * (val.ratio / 100%) }
+    else { val }
+  }
+  (width: resolve(width, size.width), height: resolve(height, size.height))
+}
+
 /// Checks whether a text label fits inside a given rectangular area.
 ///
 /// Uses a heuristic based on character width ratio to estimate text width.

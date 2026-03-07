@@ -6,6 +6,7 @@
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels, draw-x-even-labels
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/annotations.typ": draw-annotations
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a single-series line chart.
 ///
@@ -38,6 +39,8 @@
   annotations: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "line-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -122,6 +125,7 @@
       #draw-annotations(annotations, origin-x, pad-top, chart-width, chart-height, 0, calc.max(n - 1, 1), min-val, max-val, t)
     ]
   ]
+  })
 }
 
 /// Renders a multi-series line chart with a shared axis.
@@ -147,6 +151,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-series-data(data, "multi-line-chart")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -223,4 +229,5 @@
 
     #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "line")
   ]
+  })
 }

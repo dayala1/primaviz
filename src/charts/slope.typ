@@ -3,6 +3,7 @@
 #import "../util.typ": nonzero
 #import "../validate.typ": validate-slope-data
 #import "../primitives/container.typ": chart-container
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a slope chart showing changes between two time periods.
 ///
@@ -29,6 +30,8 @@
   show-values: true,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-slope-data(data, "slope-chart")
   let t = _resolve-ctx(theme)
 
@@ -154,4 +157,5 @@
       }
     ]
   ]
+  })
 }

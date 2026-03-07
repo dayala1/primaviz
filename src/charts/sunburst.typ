@@ -3,7 +3,7 @@
 #import "../validate.typ": validate-sunburst-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": annular-wedge-points, separator-stroke
-#import "../primitives/layout.typ": try-fit-label
+#import "../primitives/layout.typ": try-fit-label, resolve-size
 
 /// Computes the maximum depth of a hierarchical node tree.
 ///
@@ -87,6 +87,8 @@
   show-labels: true,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-sunburst-data(data, "sunburst-chart")
   let t = _resolve-ctx(theme)
 
@@ -180,4 +182,5 @@
       }
     ]
   ]
+  })
 }

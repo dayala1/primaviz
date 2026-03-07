@@ -5,6 +5,7 @@
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/axes.typ": draw-y-label
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a horizontal diverging bar chart where bars extend left and right
 /// from a central vertical axis. Useful for survey results (agree/disagree),
@@ -32,6 +33,8 @@
   bar-height: auto,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-diverging-data(data, "diverging-bar-chart")
   let t = _resolve-ctx(theme)
 
@@ -172,4 +175,5 @@
       t, show-legend: show-legend,
     )
   ]
+  })
 }

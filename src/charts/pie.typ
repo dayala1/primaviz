@@ -1,7 +1,7 @@
 // pie.typ - Pie and donut charts
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../util.typ": normalize-data
-#import "../primitives/layout.typ": font-for-space, try-fit-label
+#import "../primitives/layout.typ": font-for-space, try-fit-label, resolve-size
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-vertical
@@ -28,6 +28,8 @@
   donut-ratio: 0.5,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-simple-data(data, "pie-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -121,4 +123,5 @@
       }
     )
   ]
+  })
 }

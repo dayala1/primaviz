@@ -5,6 +5,7 @@
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/axes.typ": draw-y-label
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a dumbbell chart showing range or before/after comparisons.
 ///
@@ -32,6 +33,8 @@
   show-values: false,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-dumbbell-data(data, "dumbbell-chart")
   let t = _resolve-ctx(theme)
 
@@ -182,4 +185,5 @@
       }
     ]
   ]
+  })
 }

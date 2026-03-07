@@ -5,6 +5,7 @@
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
 #import "../primitives/legend.typ": draw-legend
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a waterfall (bridge) chart showing cumulative effect of positive and negative values.
 ///
@@ -38,6 +39,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "waterfall-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -204,4 +207,5 @@
       )
     }
   ]
+  })
 }

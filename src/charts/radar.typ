@@ -4,7 +4,7 @@
 #import "../primitives/container.typ": chart-container
 #import "../primitives/legend.typ": draw-legend-vertical
 #import "../primitives/polar.typ": place-polar-label
-#import "../primitives/layout.typ": font-for-space
+#import "../primitives/layout.typ": font-for-space, resolve-size
 
 /// Renders a radar (spider) chart for comparing series across multiple axes.
 ///
@@ -25,6 +25,8 @@
   fill-opacity: 15%,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-series-data(data, "radar-chart")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -166,4 +168,5 @@
       }
     )
   ]
+  })
 }

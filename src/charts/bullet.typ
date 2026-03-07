@@ -6,6 +6,7 @@
 #import "../util.typ": nonzero
 #import "../validate.typ": validate-bullet-data, validate-bullet-charts-data
 #import "../primitives/container.typ": chart-container
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a single bullet chart — a horizontal bar showing an actual value
 /// against a target marker, overlaid on qualitative range bands.
@@ -31,6 +32,8 @@
   show-target: true,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-bullet-data((value: value, target: target, ranges: ranges), "bullet-chart")
   let t = _resolve-ctx(theme)
   let bar-color = get-color(t, 0)
@@ -130,6 +133,7 @@
       }
     }
   ]
+  })
 }
 
 /// Renders multiple bullet charts stacked vertically for KPI dashboards.
@@ -151,6 +155,8 @@
   title: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let width = resolve-size(width, 0pt, size).width
   validate-bullet-charts-data(data, "bullet-charts")
   let t = _resolve-ctx(theme)
   let bullets = data.bullets
@@ -217,4 +223,5 @@
       #text(size: 6pt, fill: t.text-color)[Good]
     ]
   ]
+  })
 }

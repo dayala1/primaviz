@@ -4,7 +4,7 @@
 #import "../validate.typ": validate-number, validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": pie-slice-points, place-donut-hole
-#import "../primitives/layout.typ": font-for-space
+#import "../primitives/layout.typ": font-for-space, resolve-size
 
 /// Renders a semicircular gauge/dial chart with a needle indicator.
 ///
@@ -31,6 +31,8 @@
   needle-color: auto,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-number(value, "gauge-chart")
   let t = _resolve-ctx(theme)
   let needle-color = if needle-color == auto { t.text-color } else { needle-color }
@@ -146,6 +148,7 @@
       }
     ]
   ]
+  })
 }
 
 /// Renders a horizontal progress bar.
@@ -173,6 +176,8 @@
   rounded: true,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-number(value, "progress-bar")
   let t = _resolve-ctx(theme)
   let progress = clamp(value / max-val, 0, 1)
@@ -220,6 +225,7 @@
       }
     ]
   ]
+  })
 }
 
 /// Renders a circular progress ring indicator.
@@ -245,6 +251,8 @@
   background: luma(230),
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-number(value, "circular-progress")
   let t = _resolve-ctx(theme)
   let progress = clamp(value / max-val, 0, 1)
@@ -323,6 +331,7 @@
       }
     ]
   ]
+  })
 }
 
 /// Renders multiple labeled progress bars for comparing values.
@@ -346,6 +355,8 @@
   background: luma(230),
   theme: none,
 ) = context {
+  layout(size => {
+  let width = resolve-size(width, 0pt, size).width
   validate-simple-data(data, "progress-bars")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -381,4 +392,5 @@
       v(4pt)
     }
   ]
+  })
 }

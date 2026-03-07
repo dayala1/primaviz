@@ -1,6 +1,7 @@
 // metric.typ - Dashboard KPI tiles with big number, label, delta, and optional sparkline
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../util.typ": format-number
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a dashboard KPI tile with a prominent value, label, optional delta indicator,
 /// and optional trend sparkline.
@@ -26,6 +27,8 @@
   suffix: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let width = resolve-size(width, 0pt, size).width
   let t = _resolve-ctx(theme)
   let accent = get-color(t, 0)
 
@@ -138,6 +141,7 @@
       trend-content
     }
   ]
+  })
 }
 
 /// Renders multiple metric cards side by side in a responsive row.

@@ -7,6 +7,7 @@
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/annotations.typ": draw-annotations
 #import "../primitives/polar.typ": separator-stroke
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a horizontal bar chart with category labels on the y-axis.
 ///
@@ -31,6 +32,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "horizontal-bar-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -97,6 +100,7 @@
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
   ]
+  })
 }
 
 /// Renders a vertical bar chart with one bar per category.
@@ -124,6 +128,8 @@
   annotations: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "bar-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -192,6 +198,7 @@
       #draw-annotations(annotations, origin-x, pad-top, chart-width, chart-height, -0.5, n - 0.5, 0, max-val, t)
     ]
   ]
+  })
 }
 
 /// Renders a grouped bar chart with multiple series side by side.
@@ -215,6 +222,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-series-data(data, "grouped-bar-chart")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -276,6 +285,7 @@
 
     #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
   ]
+  })
 }
 
 /// Renders a stacked bar chart with series values stacked vertically.
@@ -299,6 +309,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-series-data(data, "stacked-bar-chart")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -367,6 +379,7 @@
 
     #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
   ]
+  })
 }
 
 /// Renders a grouped-stacked bar chart combining side-by-side groups with
@@ -395,6 +408,8 @@
   annotations: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-grouped-stacked-data(data, "grouped-stacked-bar-chart")
   let t = _resolve-ctx(theme)
   let labels = data.labels
@@ -499,4 +514,5 @@
     // Legend shows segment names (consistent colors across groups)
     #draw-legend-auto(segment-names, t, show-legend: show-legend)
   ]
+  })
 }

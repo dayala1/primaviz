@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, format-number
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/layout.typ": label-fits-inside, try-fit-label
+#import "../primitives/layout.typ": label-fits-inside, try-fit-label, resolve-size
 
 /// Renders a funnel chart for visualizing process or conversion stages.
 ///
@@ -26,6 +26,8 @@
   gap: 3pt,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-simple-data(data, "funnel-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -175,4 +177,5 @@
       }
     ]
   ]
+  })
 }

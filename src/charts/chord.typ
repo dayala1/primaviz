@@ -3,6 +3,7 @@
 #import "../validate.typ": validate-chord-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": arc-points as polar-arc-points, place-polar-label
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a chord diagram showing relationships and flows between entities
 /// arranged around a circular ring.
@@ -32,6 +33,8 @@
   gap: 2,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-chord-data(data, "chord-diagram")
   let t = _resolve-ctx(theme)
 
@@ -218,4 +221,5 @@
       }
     ]
   ]
+  })
 }

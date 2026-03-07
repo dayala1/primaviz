@@ -5,6 +5,7 @@
 #import "../primitives/axes.typ": cartesian-layout, draw-grid, draw-axis-titles, draw-x-even-labels, draw-y-ticks
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../util.typ": nonzero, nice-ceil
+#import "../primitives/layout.typ": resolve-size
 
 #let dual-axis-chart(
   data,
@@ -20,6 +21,8 @@
   show-grid: auto,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-dual-axis-data(data, "dual-axis-chart")
   let grid-overrides = if show-grid != auto { (show-grid: show-grid) } else { none }
   let t = _resolve-ctx(theme, overrides: grid-overrides)
@@ -160,4 +163,5 @@
       t, swatch-type: "line",
     )
   ]
+  })
 }

@@ -4,7 +4,7 @@
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/polar.typ": annular-wedge-points, place-polar-label, place-donut-hole, separator-stroke
-#import "../primitives/layout.typ": font-for-space
+#import "../primitives/layout.typ": font-for-space, resolve-size
 
 /// Renders a radial bar chart where each category occupies an equal angular
 /// slice of a circle and bar length (radius) is proportional to value.
@@ -28,6 +28,8 @@
   gap: 2,
   theme: none,
 ) = context {
+  layout(avail => {
+  let size = resolve-size(size, size, avail).width
   validate-simple-data(data, "radial-bar-chart")
   let t = _resolve-ctx(theme)
   let norm = normalize-data(data)
@@ -109,4 +111,5 @@
       }
     ]
   ]
+  })
 }

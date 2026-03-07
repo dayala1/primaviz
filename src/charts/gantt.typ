@@ -2,7 +2,7 @@
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../validate.typ": validate-gantt-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/layout.typ": density-skip, font-for-space
+#import "../primitives/layout.typ": density-skip, font-for-space, resolve-size
 #import "../primitives/legend.typ": draw-legend
 
 /// Renders a Gantt chart — a timeline bar chart for project scheduling.
@@ -34,6 +34,8 @@
   today: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let width = resolve-size(width, 0pt, size).width
   validate-gantt-data(data, "gantt-chart")
   let t = _resolve-ctx(theme)
   let tasks = data.tasks
@@ -191,4 +193,5 @@
       )
     }
   ]
+  })
 }

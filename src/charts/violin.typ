@@ -4,6 +4,7 @@
 #import "../validate.typ": validate-violin-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
+#import "../primitives/layout.typ": resolve-size
 
 /// Renders a violin plot showing the full density shape of distributions.
 ///
@@ -37,6 +38,8 @@
   y-label: none,
   theme: none,
 ) = context {
+  layout(size => {
+  let (width, height) = resolve-size(width, height, size)
   validate-violin-data(data, "violin-plot")
   let grid-overrides = if show-grid != auto { (show-grid: show-grid) } else { none }
   let t = _resolve-ctx(theme, overrides: grid-overrides)
@@ -265,4 +268,5 @@
       }
     ]
   ]
+  })
 }
