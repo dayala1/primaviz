@@ -117,7 +117,7 @@
       )
 
       // Min/max labels — scale font with chart size
-      #let scale-label-size = font-for-space(size, t.axis-label-size, ratio: 0.05)
+      #let scale-label-size = font-for-space(size, t.axis-label-size, min-size: 5pt, ratio: 0.07)
       #place(left + top, dx: cx - radius, dy: cy + 0.3em,
         move(dx: -1em, text(size: scale-label-size, fill: t.text-color)[#min-val]))
       #place(left + top, dx: cx + radius, dy: cy + 0.3em,
@@ -136,7 +136,7 @@
       }
 
       // Label below value
-      #let sub-label-size = font-for-space(size, t.value-label-size, ratio: 0.05)
+      #let sub-label-size = font-for-space(size, t.value-label-size, min-size: 5pt, ratio: 0.06)
       #if label != none {
         place(
           left + top,

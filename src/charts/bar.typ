@@ -56,9 +56,6 @@
       // Grid
       #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
-
       // X-axis ticks (numeric values along bottom)
       #draw-x-ticks(0, max-val, chart-width, origin-x, origin-y + 4pt, t, digits: 0)
 
@@ -95,6 +92,9 @@
         // Y-axis label (category) — right-aligned into the padding area
         draw-y-label(labels.at(i), y-pos + actual-bar-height / 2, origin-x, t)
       }
+
+      // Axes (drawn after bars so axis lines appear on top)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
@@ -152,9 +152,6 @@
       // Grid
       #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
-
       // Y-axis ticks
       #draw-y-ticks(0, max-val, chart-height, pad-top, origin-x, t)
 
@@ -187,6 +184,9 @@
           )
         }
       }
+
+      // Axes (drawn after bars so axis lines appear on top)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // X-axis category labels
       #draw-x-category-labels(labels, origin-x, spacing, origin-y + 4pt, t)
@@ -247,9 +247,6 @@
       // Grid
       #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
-
       // Y-axis ticks
       #draw-y-ticks(0, max-val, chart-height, pad-top, origin-x, t)
 
@@ -275,6 +272,9 @@
           )
         }
       }
+
+      // Axes (drawn after bars so axis lines appear on top)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // X-axis category labels
       #draw-x-category-labels(labels, origin-x, group-width, origin-y + 4pt, t)
@@ -337,9 +337,6 @@
       // Grid
       #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
-
       // Y-axis ticks
       #draw-y-ticks(0, max-val, chart-height, pad-top, origin-x, t)
 
@@ -369,6 +366,9 @@
           y-offset = y-offset + bar-h
         }
       }
+
+      // Axes (drawn after bars so axis lines appear on top)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // X-axis category labels
       #draw-x-category-labels(labels, origin-x, bar-spacing, origin-y + 4pt, t)
@@ -459,9 +459,6 @@
       // Grid
       #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
 
-      // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
-
       // Y-axis ticks
       #draw-y-ticks(0, max-val, chart-height, pad-top, origin-x, t)
 
@@ -500,6 +497,9 @@
           }
         }
       }
+
+      // Axes (drawn after bars so axis lines appear on top)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // X-axis category labels
       #draw-x-category-labels(labels, origin-x, slot-width, origin-y + 4pt, t)
