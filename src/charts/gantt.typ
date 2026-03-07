@@ -186,7 +186,7 @@
           line(
             start: (0pt, 0pt),
             end: (0pt, body-height - 20pt),
-            stroke: 1.5pt + rgb("#e15759"),
+            stroke: 1.5pt + get-color(t, calc.max(group-names.len(), 1)),
           ),
         )
       }

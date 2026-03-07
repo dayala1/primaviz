@@ -179,7 +179,7 @@
               line(
                 start: (x-end, connector-y-px),
                 end: (x-next-start, connector-y-px),
-                stroke: 0.5pt + luma(180),
+                stroke: 0.5pt + t.text-color-light,
               )
             )
           }
