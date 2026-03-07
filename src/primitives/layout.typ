@@ -14,9 +14,10 @@
       else if type(val) == ratio { avail * (val / 100%) }
       else if type(val) == relative { val.length + avail * (val.ratio / 100%) }
       else { val }
-    // Clamp to available space so charts don't overflow containers
+    // Clamp to available space so charts don't overflow containers.
+    // Reserve 16pt for chart-container inset padding (2 × 8pt).
     if type(resolved) == length and type(avail) == length and avail > 0pt {
-      calc.min(resolved, avail)
+      calc.min(resolved, avail - 16pt)
     } else {
       resolved
     }

@@ -38,16 +38,34 @@
 
   let total = values.sum()
   let n = values.len()
-  let radius = size / 2
 
   // Respect both show-legend param and theme legend-position
   let show-legend = show-legend and t.legend-position != "none"
 
   // Calculate legend width — ensure enough room for label text + percentages
-  let legend-width = if size < 120pt { calc.max(100pt, calc.min(150pt, n * 18pt + 30pt)) } else { calc.max(130pt, calc.min(180pt, n * 20pt + 40pt)) }
+  let legend-gap = if show-legend { 20pt } else { 0pt }
+  let legend-width = if not show-legend { 0pt } else if size < 120pt { calc.max(100pt, calc.min(150pt, n * 18pt + 30pt)) } else { calc.max(130pt, calc.min(180pt, n * 20pt + 40pt)) }
 
-  // Total width: pie + gap + legend (if shown)
-  let total-width = size + (if show-legend { 20pt + legend-width } else { 0pt })
+  // Total width: pie + gap + legend — clamp to available width
+  // Subtract container inset (2×8pt) since chart-container adds it to the outer box
+  let container-inset = 16pt
+  let avail-w = if type(avail.width) == length and avail.width > 0pt { avail.width } else { none }
+  let total-width = size + legend-gap + legend-width
+  if avail-w != none and total-width + container-inset > avail-w {
+    let budget = avail-w - container-inset
+    // Shrink pie to fit, keeping legend width
+    let pie-budget = budget - legend-gap - legend-width
+    if pie-budget >= 80pt {
+      size = pie-budget
+    } else {
+      // Both need shrinking — give pie 60% of space
+      size = budget * 0.55
+      legend-width = budget - size - legend-gap
+    }
+    total-width = budget
+  }
+
+  let radius = size / 2
 
   // Compute legend height — grow container if legend is taller than pie
   let swatch-size = 10pt
@@ -58,7 +76,7 @@
     // Use a grid layout to keep pie and legend separate
     #grid(
       columns: if show-legend { (size, legend-width) } else { (size,) },
-      column-gutter: 20pt,
+      column-gutter: legend-gap,
 
       // Pie chart
       box(width: size, height: size)[
