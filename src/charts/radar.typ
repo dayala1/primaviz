@@ -59,7 +59,7 @@
   }
 
   // Recompute radius after potential resize
-  let radius = size / 2 - calc.max(18pt, size * 0.28)
+  let radius = size / 2 - calc.max(16pt, size * 0.2)
   let cx = size / 2
   let cy = size / 2
 

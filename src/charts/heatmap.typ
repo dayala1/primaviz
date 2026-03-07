@@ -43,9 +43,9 @@
   let max-val = calc.max(..all-vals)
   let val-range = nonzero(max-val - min-val)
 
-  let row-label-width = calc.max(30pt, n-cols * cell-size * 0.2 + 20pt)
-  let col-label-height = calc.max(35pt, cell-size * 2.5)
-  let legend-width = if show-legend { 60pt } else { 0pt }
+  let row-label-width = calc.max(30pt, n-cols * cell-size * 0.15 + 15pt)
+  let col-label-height = calc.max(30pt, cell-size * 1.5)
+  let legend-width = if show-legend { 40pt } else { 0pt }
 
   // Shrink cell-size if total width exceeds available space
   let overhead = row-label-width + legend-width + 20pt + 2 * container-inset
