@@ -137,6 +137,7 @@ just demo       # Compile the comprehensive demo
 - `alert` - Info/warning/error/success notification block with left border accent
 - `badge` - Inline colored pill (default/secondary/destructive/outline/success)
 - `separator` - Themed horizontal rule
+- `dashboard-layout` - Grid layout helper for multi-row dashboard pages
 - `word-cloud` - Weighted text layout sized by importance
 
 ### Annotations
@@ -230,6 +231,20 @@ Pass a dictionary with only the keys you want to change. Unspecified keys fall b
 ```typst
 #bar-chart(data, theme: (show-grid: true, palette: (red, blue, green)))
 ```
+
+### Theme from JSON
+
+Build a theme from a JSON tokens file (e.g., exported from a CSS design system):
+
+```typst
+#let tokens = json("tokens.json")
+#let my-theme = theme-from-json(tokens.light)
+#let my-dark = theme-from-json(tokens.dark)
+
+#show: with-theme.with(my-theme)
+```
+
+Expected JSON format: `palette` (array of hex strings), `text-color`, `text-color-light`, `text-color-inverse`, `background` (hex or null), `border-color`, `border-radius` (number in pt).
 
 ### Custom theme keys
 
@@ -352,7 +367,7 @@ primaviz/
       radial-bar.typ         # circular bars
       sunburst.typ           # multi-level hierarchical pie
       metric.typ             # metric-card, metric-row
-      dashboard.typ          # card, compact-table
+      dashboard.typ          # card, compact-table, alert, badge, separator, dashboard-layout
       violin.typ             # kernel density estimation
       timeline.typ           # vertical event timeline
       parliament.typ         # semicircle seat chart
@@ -386,8 +401,8 @@ primaviz/
       demo-dashboard.typ     # metric-row, word-cloud, sparklines, progress-bars
       demo-rings.typ         # ring-progress, treemap
       demo-bump.typ          # bump-chart, funnel-chart
-      demo-themes.typ        # theme comparison (all 6 presets + with-theme)
-    showcase.typ             # 7-page compact showcase (dark theme)
+      demo-themes.typ        # theme comparison (all 7 presets + with-theme)
+    showcase.typ             # 8-page compact showcase (dark theme)
     demo.typ                 # Comprehensive demo with JSON data loading
   data/                      # Sample JSON data files
   screenshots/
