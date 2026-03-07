@@ -42,7 +42,7 @@ screenshots:
     mkdir -p screenshots/demo screenshots/showcase
     for f in examples/demos/demo-*.typ; do
         base=$(basename "$f" .typ)
-        typst compile --root . "$f" "screenshots/demo/${base}.png" || exit 1
+        typst compile --root . "$f" "screenshots/demo/${base}-{0p}.png" || exit 1
     done
     typst compile --root . examples/showcase.typ "screenshots/showcase/showcase-{0p}.png"
     optipng -o2 -quiet screenshots/demo/*.png screenshots/showcase/*.png || echo "optipng not found, skipping optimization"
