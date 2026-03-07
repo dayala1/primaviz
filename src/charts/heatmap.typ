@@ -370,6 +370,7 @@
         // Cells
         for (j, val) in values.at(i).enumerate() {
           let cell-color = corr-color(val)
+          let cell-stroke = if t.background != none { t.background + 0.5pt } else { white + 0.5pt }
 
           place(
             left + top,
@@ -379,12 +380,14 @@
               width: cell-size,
               height: cell-size,
               fill: cell-color,
-              stroke: white + 0.5pt,
+              stroke: cell-stroke,
             )
           )
 
           if show-values {
-            let text-color = if calc.abs(val) > 0.5 { t.text-color-inverse } else { t.text-color }
+            // Cell backgrounds are always white-based (blue-white-red), so use
+            // fixed dark/light text regardless of theme to ensure contrast
+            let text-color = if calc.abs(val) > 0.5 { white } else { black }
             place(
               left + top,
               dx: label-area + j * cell-size,
