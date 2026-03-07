@@ -184,6 +184,23 @@
   ),
 ))
 
+#let compact-theme = resolve-theme((
+  title-size: 8pt,
+  axis-label-size: 5pt,
+  axis-title-size: 6pt,
+  legend-size: 6pt,
+  value-label-size: 6pt,
+  legend-swatch-size: 7pt,
+  legend-gap: 6pt,
+  title-gap: 3pt,
+  axis-padding-left: 25pt,
+  axis-padding-bottom: 12pt,
+  axis-padding-top: 5pt,
+  axis-padding-right: 5pt,
+  show-grid: true,
+  grid-stroke: 0.3pt + luma(230),
+))
+
 #let themes = (
   default: default-theme,
   minimal: minimal-theme,
@@ -191,4 +208,5 @@
   presentation: presentation-theme,
   print: print-theme,
   accessible: accessible-theme,
+  compact: compact-theme,
 )
