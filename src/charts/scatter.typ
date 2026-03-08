@@ -389,7 +389,7 @@
           place(left + top,
             line(start: (edge-x, edge-y),
                  end: (anchor-x, anchor-y),
-                 stroke: 0.5pt + luma(140)))
+                 stroke: 0.5pt + t.text-color-light))
           place(
             left + top,
             dx: ol.lx,

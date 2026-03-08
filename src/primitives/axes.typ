@@ -158,7 +158,7 @@
 
   // Minor grid lines (drawn first, behind major)
   if show-minor-grid and tick-count > 1 {
-    let minor-stroke = theme.at("minor-grid-stroke", default: 0.25pt + luma(240))
+    let minor-stroke = theme.at("minor-grid-stroke", default: 0.25pt + theme.text-color-light.transparentize(60%))
     for i in array.range(tick-count - 1) {
       for j in array.range(1, minor-count) {
         let fraction = (i + j / minor-count) / (tick-count - 1)

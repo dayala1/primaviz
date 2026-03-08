@@ -378,7 +378,7 @@
           // Map correlation range [-1, +1] to normalized [0, 1] for heat-color
           let normalized = (calc.max(-1, calc.min(1, val)) + 1) / 2
           let cell-color = heat-color(normalized, palette: palette, reverse: reverse)
-          let cell-stroke = if t.background != none { t.background + 0.5pt } else { white + 0.5pt }
+          let cell-stroke = t.marker-stroke
 
           place(
             left + top,

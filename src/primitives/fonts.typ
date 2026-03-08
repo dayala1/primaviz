@@ -138,7 +138,7 @@
 /// - leader (bool): Whether to draw a leader line
 /// - leader-stroke (stroke): Stroke style for the leader line
 /// -> content
-#let place-cartesian-label(x, y, body, bounds, box-width: 40pt, box-height: 12pt, offset-y: -12pt, leader: false, leader-stroke: 0.5pt + luma(140)) = {
+#let place-cartesian-label(x, y, body, bounds, box-width: 40pt, box-height: 12pt, offset-y: -12pt, leader: false, leader-stroke: 0.5pt + gray) = {
   // Determine quadrant-aware offset: push label away from center
   let cx = (bounds.left + bounds.right) / 2
   let cy = (bounds.top + bounds.bottom) / 2

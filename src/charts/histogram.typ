@@ -126,7 +126,7 @@
             width: bar-w,
             height: bar-h,
             fill: fill-color,
-            stroke: (if t.background != none { t.background } else { white }) + 0.5pt,
+            stroke: t.marker-stroke,
           )
         )
 
