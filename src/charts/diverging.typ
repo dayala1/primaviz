@@ -63,7 +63,11 @@
   let extra-h = if show-legend { 50pt } else { 30pt }
 
   let tick-area = 18pt  // Reserve space below bars for tick labels
-  chart-container(width, height, title, t, extra-height: extra-h)[
+  let legend-content = draw-legend-auto(
+    ((name: left-label, color: get-color(t, 0)), (name: right-label, color: get-color(t, 1))),
+    t, show-legend: show-legend,
+  )
+  chart-container(width, height, title, t, extra-height: extra-h, legend: legend-content)[
     #let chart-height = height - t.axis-padding-top - t.axis-padding-bottom - tick-area
     #let spacing = chart-height / n
     #let actual-bar-h = spacing * bar-frac
@@ -176,12 +180,6 @@
           move(dx: -3em, box(width: 6em, align(center, text(size: t.axis-title-size, fill: t.text-color)[#x-label]))))
       }
     ]
-
-    // Legend
-    #draw-legend-auto(
-      ((name: left-label, color: get-color(t, 0)), (name: right-label, color: get-color(t, 1))),
-      t, show-legend: show-legend,
-    )
   ]
   })
 }

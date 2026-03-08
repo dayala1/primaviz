@@ -236,7 +236,8 @@
 
   let cl = cartesian-layout(width, height, t)
 
-  chart-container(width, height, title, t, extra-height: 50pt)[
+  let legend-content = draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
+  chart-container(width, height, title, t, extra-height: 50pt, legend: legend-content)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -282,8 +283,6 @@
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
-
-    #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
   ]
   })
 }
@@ -326,7 +325,8 @@
 
   let cl = cartesian-layout(width, height, t)
 
-  chart-container(width, height, title, t, extra-height: 50pt)[
+  let legend-content = draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
+  chart-container(width, height, title, t, extra-height: 50pt, legend: legend-content)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -376,8 +376,6 @@
       // Axis titles
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
-
-    #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend)
   ]
   })
 }
@@ -448,7 +446,9 @@
 
   let cl = cartesian-layout(width, height, t)
 
-  chart-container(width, height, title, t, extra-height: 50pt)[
+  // Legend shows segment names (consistent colors across groups)
+  let legend-content = draw-legend-auto(segment-names, t, show-legend: show-legend)
+  chart-container(width, height, title, t, extra-height: 50pt, legend: legend-content)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -510,9 +510,6 @@
       // Annotations
       #draw-annotations(annotations, origin-x, pad-top, chart-width, chart-height, -0.5, n-labels - 0.5, 0, max-val, t)
     ]
-
-    // Legend shows segment names (consistent colors across groups)
-    #draw-legend-auto(segment-names, t, show-legend: show-legend)
   ]
   })
 }

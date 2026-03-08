@@ -154,7 +154,8 @@
 
   let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
-  chart-container(width, height, title, t, extra-height: 50pt)[
+  let legend-content = draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
+  chart-container(width, height, title, t, extra-height: 50pt, legend: legend-content)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -195,9 +196,6 @@
 
       #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
     ]
-
-    // Legend
-    #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
   ]
   })
 }
@@ -467,7 +465,8 @@
 
   let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
-  chart-container(width, height, title, t, extra-height: 50pt)[
+  let legend-content = draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
+  chart-container(width, height, title, t, extra-height: 50pt, legend: legend-content)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -513,9 +512,6 @@
         }
       }
     ]
-
-    // Legend
-    #draw-legend-auto(series.map(s => s.name), t, show-legend: show-legend, swatch-type: "circle")
 
     // Size legend
     #if size-label != none {

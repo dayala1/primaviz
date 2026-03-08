@@ -91,7 +91,7 @@
     d
   } else { t }
 
-  align(center, chart-container(size, size, title, t-with-legend, extra-height: extra-height, legend: if show-legend { legend-content }, legend-width: legend-width + legend-gap)[
+  align(center, chart-container(size, size, title, t-with-legend, extra-height: extra-height, legend: if show-legend { legend-content }, legend-width: legend-width)[
     // Pie chart
     #box(width: size, height: size)[
       #let center-x = radius

@@ -17,8 +17,9 @@
   let title-overhead = if title != none { theme.title-size + theme.title-gap + 4pt + subtitle-overhead } else { if has-subtitle { subtitle-overhead + theme.title-gap + 4pt } else { 0pt } }
   let lp = theme.legend-position
   let side-legend = (lp == "right" or lp == "left") and legend != none
+  let legend-gap = if side-legend { 10pt } else { 0pt }
   box(
-    width: if side-legend { width + legend-width + 2 * pad } else { width + 2 * pad },
+    width: if side-legend { width + legend-gap + legend-width + 2 * pad } else { width + 2 * pad },
     height: height + extra-height + title-overhead + 2 * pad,
     fill: theme.background,
     stroke: theme.border,
@@ -37,9 +38,9 @@
         let content-h = calc.max(height, legend-h)
         // Shift both chart and legend down if legend extends above chart
         let base-dy = if legend-dy < 0pt { -legend-dy } else { 0pt }
-        box(width: width + legend-width + 10pt, height: content-h)[
+        box(width: width + legend-gap + legend-width, height: content-h)[
           #place(left + top, dy: base-dy, box(width: width, height: height, body))
-          #place(left + top, dx: width + 10pt, dy: base-dy + legend-dy,
+          #place(left + top, dx: width + legend-gap, dy: base-dy + legend-dy,
             box(width: legend-width, legend))
         ]
       }
@@ -49,10 +50,10 @@
         let legend-dy = (height - legend-h) / 2
         let content-h = calc.max(height, legend-h)
         let base-dy = if legend-dy < 0pt { -legend-dy } else { 0pt }
-        box(width: width + legend-width + 10pt, height: content-h)[
+        box(width: width + legend-gap + legend-width, height: content-h)[
           #place(left + top, dy: base-dy + legend-dy,
             box(width: legend-width, legend))
-          #place(left + top, dx: legend-width + 10pt, dy: base-dy,
+          #place(left + top, dx: legend-width + legend-gap, dy: base-dy,
             box(width: width, height: height, body))
         ]
       }
