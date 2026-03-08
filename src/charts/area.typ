@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, nonzero, nice-ceil
 #import "../validate.typ": validate-simple-data, validate-series-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-even-labels
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-even-labels, measure-y-tick-width
 #import "../primitives/legend.typ": draw-legend-auto
 #import "../primitives/layout.typ": resolve-size
 
@@ -133,7 +133,8 @@
       #draw-x-even-labels(labels, n, origin-x, chart-width, origin-y, t)
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(min-val, max-val, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
     ]
   ]
   })
@@ -248,7 +249,8 @@
       #draw-x-even-labels(labels, n, origin-x, chart-width, origin-y, t)
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(0, max-val, t, digits: 0)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
     ]
   ]
   })

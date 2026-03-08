@@ -1,48 +1,91 @@
 // theme.typ - Theme system for primaviz
+//
+// Golden-ratio proportional scaling: two seed values (base-size, base-gap)
+// drive all font sizes and spacing through φ-powers. Users can override
+// any individual property, or change the seeds to scale everything at once.
 
 // Global theme state — set via with-theme(), read by chart functions
 #let _primaviz-theme = state("primaviz-theme", none)
 
-// Default theme — flat keys, no nesting
-#let default-theme = (
-  palette: (
-    rgb("#4e79a7"),
-    rgb("#f28e2b"),
-    rgb("#e15759"),
-    rgb("#76b7b2"),
-    rgb("#59a14f"),
-    rgb("#edc948"),
-    rgb("#b07aa1"),
-    rgb("#ff9da7"),
-    rgb("#9c755f"),
-    rgb("#bab0ac"),
-  ),
-  title-size: 11pt,
-  title-weight: "bold",
-  axis-label-size: 7pt,
-  axis-title-size: 8pt,
-  legend-size: 8pt,
-  value-label-size: 8pt,
-  axis-stroke: 0.5pt + black,
-  axis-padding-left: 40pt,
-  axis-padding-bottom: 20pt,
-  axis-padding-top: 10pt,
-  axis-padding-right: 10pt,
-  tick-count: 5,
-  number-format: "auto",
-  grid-stroke: 0.5pt + luma(230),
-  show-grid: false,
-  legend-position: "bottom",
-  legend-swatch-size: 10pt,
-  legend-gap: 10pt,
-  title-gap: 5pt,
-  marker-stroke: 0.5pt + white,
-  text-color: black,
-  text-color-light: luma(130),
-  text-color-inverse: white,
-  background: none,
-  border: none,
-  border-radius: 4pt,
+// Golden ratio constant
+#let _phi = 1.618
+#let _sqrt-phi = calc.sqrt(_phi)
+
+/// Derives a complete theme from two seed values using golden-ratio scaling.
+///
+/// Font scale (base-size × φ^power):
+///   φ^0    = 1.00×  axis-label-size, value-label-size
+///   φ^0.5  = 1.27×  axis-title-size, legend-size
+///   φ^1    = 1.62×  title-size
+///
+/// Spacing scale (base-gap × φ^power):
+///   φ^0    = 1.00×  axis-label-gap
+///   φ^0.5  = 1.27×  title-gap
+///   φ^1    = 1.62×  legend-gap
+///   φ^1.5  = 2.06×  legend-swatch-size
+///   φ^2    = 2.62×  axis-padding-top, axis-padding-right
+///   φ^3    = 4.24×  axis-padding-bottom
+///   φ^4    = 6.85×  axis-padding-left
+#let _derive-theme(base-size, base-gap) = {
+  let phi2 = _phi * _phi
+  let phi3 = phi2 * _phi
+  let phi4 = phi3 * _phi
+  (
+    // Seeds
+    base-size: base-size,
+    base-gap: base-gap,
+
+    // Palette
+    palette: (
+      rgb("#4e79a7"), rgb("#f28e2b"), rgb("#e15759"), rgb("#76b7b2"),
+      rgb("#59a14f"), rgb("#edc948"), rgb("#b07aa1"), rgb("#ff9da7"),
+      rgb("#9c755f"), rgb("#bab0ac"),
+    ),
+
+    // Font scale — golden ratio from base-size
+    axis-label-size: base-size,
+    axis-title-size: base-size * _sqrt-phi,
+    value-label-size: base-size * _sqrt-phi,
+    legend-size: base-size * _sqrt-phi,
+    title-size: base-size * _phi,
+    title-weight: "bold",
+
+    // Spacing scale — golden ratio from base-gap
+    axis-label-gap: base-gap,
+    title-gap: base-gap * _sqrt-phi,
+    legend-gap: base-gap * _phi,
+    legend-swatch-size: base-gap * _phi * _sqrt-phi,
+    axis-padding-top: base-gap * phi2,
+    axis-padding-right: base-gap * phi2,
+    axis-padding-bottom: base-gap * phi3,
+    axis-padding-left: base-gap * phi4,
+
+    // Non-scaled properties
+    tick-count: 5,
+    number-format: "auto",
+    axis-stroke: 0.5pt + black,
+    grid-stroke: 0.5pt + luma(230),
+    show-grid: false,
+    legend-position: "bottom",
+    marker-stroke: 0.5pt + white,
+    text-color: black,
+    text-color-light: luma(130),
+    text-color-inverse: white,
+    background: none,
+    border: none,
+    border-radius: base-gap,
+  )
+}
+
+// Default theme — derived from base seeds
+#let default-theme = _derive-theme(8pt, 6pt)
+
+// Keys whose values are derived from seeds — used to detect explicit overrides
+#let _seed-derived-keys = (
+  "axis-label-size", "axis-title-size", "value-label-size", "legend-size", "title-size",
+  "axis-label-gap", "title-gap", "legend-gap", "legend-swatch-size",
+  "axis-padding-top", "axis-padding-right", "axis-padding-bottom", "axis-padding-left",
+  "border-radius",
 )
 
 /// Merges a user's partial theme dictionary onto the default theme.
@@ -117,6 +160,10 @@
 /// When user-theme is provided, it merges onto the global state (set via
 /// `with-theme`) rather than replacing it, so partial overrides like
 /// `theme: (show-grid: true)` inside a `with-theme` block work correctly.
+///
+/// If `base-size` or `base-gap` are set, all φ-derived properties are
+/// recomputed from the new seeds — unless individually overridden.
+///
 /// Custom keys not in default-theme are preserved (passthrough).
 /// Must be called inside a `context` block.
 ///
@@ -125,27 +172,39 @@
 /// -> dictionary
 #let _resolve-ctx(user-theme, overrides: none) = {
   let global = _primaviz-theme.get()  // may be none
-  // Merge: default ← global ← user-theme (each layer wins over the one below)
-  let result = (:)
-  for (key, val) in default-theme {
-    let resolved = val
-    if global != none and key in global { resolved = global.at(key) }
-    if user-theme != none and key in user-theme { resolved = user-theme.at(key) }
-    result.insert(key, resolved)
+
+  // Step 1: Determine seed values from highest-priority source
+  let bs = default-theme.base-size
+  let bg = default-theme.base-gap
+  for source in (global, user-theme, overrides) {
+    if source != none {
+      if "base-size" in source { bs = source.at("base-size") }
+      if "base-gap" in source { bg = source.at("base-gap") }
+    }
   }
-  // Passthrough: preserve custom keys from global and user-theme
-  for source in (global, user-theme) {
+
+  // Step 2: Compute seed-derived defaults
+  let result = _derive-theme(bs, bg)
+
+  // Step 3: Apply explicit overrides from each source layer.
+  // For seed-derived keys, only apply if the value differs from the
+  // default-theme value (meaning it was explicitly set, not inherited).
+  for source in (global, user-theme, overrides) {
     if source != none {
       for (key, val) in source {
-        if key not in result { result.insert(key, val) }
+        if key == "base-size" or key == "base-gap" { continue }
+        if key in _seed-derived-keys {
+          // Only apply if explicitly different from default
+          if key not in default-theme or val != default-theme.at(key) {
+            result.insert(key, val)
+          }
+        } else {
+          result.insert(key, val)
+        }
       }
     }
   }
-  if overrides != none {
-    for (key, val) in overrides {
-      result.insert(key, val)
-    }
-  }
+
   result
 }
 
@@ -189,7 +248,7 @@
 // --- Named preset themes ---
 
 // Preset themes — each is a partial override dict resolved against default-theme.
-// Usage: `chart(data, theme: minimal-theme)` or `chart(data, theme: dark-theme)`
+// Usage: `chart(data, theme: themes.minimal)` or `chart(data, theme: themes.dark)`
 
 #let minimal-theme = resolve-theme((
   palette: (
@@ -200,7 +259,6 @@
   axis-stroke: 0.3pt + luma(150),
   grid-stroke: 0.3pt + luma(240),
   show-grid: true,
-  title-size: 10pt,
   title-weight: "regular",
   border: none,
 ))
@@ -220,12 +278,8 @@
 ))
 
 #let presentation-theme = resolve-theme((
-  title-size: 14pt,
-  axis-label-size: 9pt,
-  axis-title-size: 10pt,
-  legend-size: 10pt,
-  value-label-size: 10pt,
-  legend-swatch-size: 12pt,
+  base-size: 10pt,
+  base-gap: 5pt,
 ))
 
 #let print-theme = resolve-theme((
@@ -245,21 +299,10 @@
 ))
 
 #let compact-theme = resolve-theme((
-  title-size: 8pt,
-  axis-label-size: 5pt,
-  axis-title-size: 6pt,
-  legend-size: 6pt,
-  value-label-size: 6pt,
-  legend-swatch-size: 7pt,
-  legend-gap: 6pt,
-  title-gap: 3pt,
-  axis-padding-left: 25pt,
-  axis-padding-bottom: 12pt,
-  axis-padding-top: 5pt,
-  axis-padding-right: 5pt,
+  base-size: 5pt,
+  base-gap: 3pt,
   show-grid: true,
   grid-stroke: 0.3pt + luma(230),
-  border-radius: 2pt,
 ))
 
 #let themes = (

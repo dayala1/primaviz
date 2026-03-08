@@ -51,8 +51,15 @@
   let max-val = nice-ceil(calc.max(..all-values))
   let val-range = nonzero(max-val - min-val)
 
-  // Layout constants — scale with chart dimensions; label area grows with width
-  let label-margin = calc.min(100pt, calc.max(70pt, width * 0.25))
+  // Measure actual label widths for the left margin
+  let label-margin = {
+    let max-w = 0pt
+    for lbl in labels {
+      let w = measure(text(size: t.axis-label-size)[#lbl]).width
+      if w > max-w { max-w = w }
+    }
+    max-w + t.axis-label-gap * 2
+  }
   let value-pad = if show-values { 24pt } else { 0pt }  // room for left value labels
   let right-pad = calc.max(10pt + value-pad, width * 0.05 + value-pad)
   let top-pad = calc.max(5pt, height * 0.06)

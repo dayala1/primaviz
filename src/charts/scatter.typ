@@ -4,7 +4,7 @@
 #import "../primitives/layout.typ": label-fits-inside, place-cartesian-label, try-fit-label, greedy-deconflict, resolve-size
 #import "../validate.typ": validate-scatter-data, validate-multi-scatter-data, validate-bubble-data, validate-multi-bubble-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-ticks, measure-y-tick-width
 #import "../primitives/legend.typ": draw-legend-auto, draw-size-legend
 #import "../primitives/annotations.typ": draw-annotations
 
@@ -100,7 +100,8 @@
       }
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(y-min, y-max, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
 
       // Annotations
       #draw-annotations(annotations, origin-x, pad-top, chart-width, chart-height, x-min, x-max, y-min, y-max, t)
@@ -198,7 +199,8 @@
         }
       }
 
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(y-min, y-max, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
     ]
   ]
   })
@@ -402,7 +404,8 @@
       }
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(y-min, y-max, t)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
     ]
 
     // Size legend below chart

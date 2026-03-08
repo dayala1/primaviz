@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data, format-number, nonzero, nice-ceil
 #import "../validate.typ": validate-simple-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels, measure-y-tick-width
 #import "../primitives/legend.typ": draw-legend
 #import "../primitives/layout.typ": resolve-size
 
@@ -166,7 +166,7 @@
         // Value label
         if show-values {
           let val = values.at(i)
-          let label-y = bar-top-px - 12pt
+          let label-y = bar-top-px - t.value-label-size * 1.5
           place(left + top, dx: x-pos, dy: label-y,
             box(width: actual-bw, align(center,
               text(size: t.value-label-size, fill: t.text-color)[#format-number(val, digits: 0, mode: t.number-format)])))
@@ -188,7 +188,7 @@
               line(
                 start: (x-end, connector-y-px),
                 end: (x-next-start, connector-y-px),
-                stroke: 0.5pt + t.text-color-light,
+                stroke: t.grid-stroke,
               )
             )
           }
@@ -196,8 +196,8 @@
 
         // X-axis label — use full slot width for longer labels
         let slot-x = origin-x + i * spacing
-        place(left + top, dx: slot-x, dy: origin-y + 2pt,
-          box(width: spacing, height: 1.2em, align(center,
+        place(left + top, dx: slot-x, dy: origin-y + t.axis-label-size * 0.3,
+          box(width: spacing, height: t.axis-label-size * 1.8, align(center,
             text(size: t.axis-label-size, fill: t.text-color)[#labels.at(i)])))
 
       }
@@ -206,7 +206,8 @@
       #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t)
+      #let y-tw = measure-y-tick-width(y-min, y-max, t, digits: 0)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
     ]
 
     // Color key legend

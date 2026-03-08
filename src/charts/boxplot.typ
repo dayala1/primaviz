@@ -3,7 +3,7 @@
 #import "../util.typ": nonzero, nice-ceil
 #import "../validate.typ": validate-boxplot-data
 #import "../primitives/container.typ": chart-container
-#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles
+#import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-y-ticks, draw-x-category-labels, draw-grid, draw-axis-titles, measure-y-tick-width
 #import "../primitives/layout.typ": resolve-size
 
 /// Renders a box-and-whisker plot for comparing distributions.
@@ -79,7 +79,8 @@
       #draw-x-category-labels(labels, origin-x, spacing, origin-y + 4pt, t)
 
       // Axis titles
-      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, origin-y / 2, t)
+      #let y-tw = measure-y-tick-width(y-min, y-max, t, digits: 0)
+      #draw-axis-titles(x-label, y-label, origin-x + chart-width / 2, pad-top + chart-height / 2, t, origin-x: origin-x, origin-y: origin-y, y-tick-width: y-tw)
 
       // Draw each box
       #for (i, b) in boxes.enumerate() {
