@@ -247,6 +247,27 @@ Build a theme from a JSON tokens file (e.g., exported from a CSS design system):
 
 Expected JSON format: `palette` (array of hex strings), `text-color`, `text-color-light`, `text-color-inverse`, `background` (hex or null), `border-color`, `border-radius` (number in pt).
 
+### Extracting themes from CSS
+
+The repo includes two scripts for converting CSS design tokens into primaviz theme files (both `.typ` and `.json`). They parse CSS custom properties from `:root` and dark-mode blocks, convert colors (oklch, hsl, rgb, hex) to hex with alpha blending, and map `--chart-1`..N to a palette array and semantic properties (`--foreground`, `--background`, `--border`, `--radius`, etc.) to primaviz theme keys.
+
+**Python** (`scripts/extract-theme.py`) — the most sophisticated tool in the repo. Uses `uv run` for zero-install execution (dependencies are declared inline). Powered by `coloraide` for color space conversion:
+
+```bash
+just extract-theme src/index.css                          # default: outputs typst + json to ./typst/
+just extract-theme styles.css --name shadcn --format json  # json only, custom name
+just extract-theme globals.css --dark-selector '[data-theme="dark"]'
+```
+
+**TypeScript** (`scripts/extract-theme.ts`) — equivalent functionality using Bun and `culori`. Extracts additional semantic tokens (card, accent, destructive, etc.) in an `all` field:
+
+```bash
+just extract-theme-ts src/index.css
+just extract-theme-ts styles.css --name shadcn --format typst
+```
+
+Both scripts accept the same flags: `--out-dir`, `--format` (typst/json/both), `--name`, and `--dark-selector`. Run either with `--help` for full usage.
+
 ### Custom theme keys
 
 Themes support passthrough of custom keys not in the default theme. This lets you extend the theme system for your own components:
@@ -410,8 +431,8 @@ primaviz/
     demo/                    # Per-chart demo screenshots (demo-*.png)
     showcase/                # Showcase page screenshots (showcase-*.png)
   scripts/
-    extract-theme.py         # CSS → JSON token extractor (uv script, zero-install)
-    extract-theme.ts         # CSS → JSON token extractor (bun script, auto-installs culori)
+    extract-theme.py         # CSS → primaviz theme extractor (uv script, zero-install, coloraide)
+    extract-theme.ts         # CSS → primaviz theme extractor (bun script, culori)
   justfile                   # Common dev commands
 ```
 

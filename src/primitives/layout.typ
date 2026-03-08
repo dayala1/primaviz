@@ -127,7 +127,8 @@
 ///
 /// Takes an array of proposal dicts, each with keys `cx`, `cy`, `lx`, `ly`, `w`, `h`
 /// (plus any extra keys which are preserved). Sorts by `ly`, then nudges overlapping
-/// labels downward. Clamps final positions to `bounds`.
+/// labels, trying both upward and downward and picking the direction that keeps the
+/// label closest to its original proposed position.
 ///
 /// - proposals (array): Array of label-position dicts
 /// - bounds (dictionary): Dict with `left`, `right`, `top`, `bottom` keys
@@ -139,12 +140,32 @@
   let placed = ()
   for p in sorted {
     let ly = p.ly
-    // Check against all already-placed labels, nudge down if overlapping
-    for prev in placed {
-      let overlap-v = prev.ly + prev.h + gap - ly
-      let overlap-h = not (p.lx + p.w <= prev.lx or prev.lx + prev.w <= p.lx)
-      if overlap-h and overlap-v > 0pt {
-        ly = prev.ly + prev.h + gap
+    let orig-ly = p.ly
+    // Check against all already-placed labels for overlaps
+    let has-overlap = true
+    let iters = 0
+    // Iteratively resolve overlaps (max 10 iterations to avoid infinite loops)
+    while has-overlap and iters < 10 {
+      has-overlap = false
+      iters += 1
+      for prev in placed {
+        let overlap-v = prev.ly + prev.h + gap - ly
+        let overlap-h = not (p.lx + p.w <= prev.lx or prev.lx + prev.w <= p.lx)
+        if overlap-h and overlap-v > 0pt {
+          // Try nudging down
+          let ly-down = prev.ly + prev.h + gap
+          // Try nudging up (above the conflicting label)
+          let ly-up = prev.ly - p.h - gap
+          // Pick the direction closer to the original proposed position
+          let dist-down = calc.abs((ly-down - orig-ly) / 1pt)
+          let dist-up = calc.abs((ly-up - orig-ly) / 1pt)
+          if ly-up >= bounds.top and dist-up <= dist-down {
+            ly = ly-up
+          } else {
+            ly = ly-down
+          }
+          has-overlap = true
+        }
       }
     }
     // Clamp to bounds

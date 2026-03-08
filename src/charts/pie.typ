@@ -26,6 +26,8 @@
   show-percentages: true,
   donut: false,
   donut-ratio: 0.4,
+  subtitle: none,
+  radius: 0pt,
   theme: none,
 ) = context {
   layout(avail => {
@@ -91,7 +93,7 @@
     d
   } else { t }
 
-  align(center, chart-container(size, size, title, t-with-legend, extra-height: extra-height, legend: if show-legend { legend-content }, legend-width: legend-width)[
+  align(center, chart-container(size, size, title, t-with-legend, extra-height: extra-height, legend: if show-legend { legend-content }, legend-width: legend-width, subtitle: subtitle, radius: radius)[
     // Pie chart
     #box(width: size, height: size)[
       #let center-x = radius

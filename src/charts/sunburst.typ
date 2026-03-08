@@ -156,9 +156,15 @@
             let ly = cy + mid-r * calc.sin(mid-angle * 1deg)
             // All labels sit on colored pill backgrounds — use inverse text for contrast
             let label-color = t.text-color-inverse
-            // Size pill to text, not arc
-            let label-w = fit.size * 0.5 * lbl-len + 4pt
-            let pill-h = fit.size * 1.4
+            // Measure actual text dimensions for tight-fitting pill
+            let label-content = text(
+              size: fit.size,
+              fill: label-color,
+              weight: if seg.depth == 1 { "bold" } else { "regular" },
+            )[#seg.name]
+            let text-size = measure(label-content)
+            let label-w = text-size.width + 4pt
+            let pill-h = text-size.height + 3pt
             // Semi-transparent background pill matching segment color
             let pill-fill = seg-color.transparentize(20%)
             place(
@@ -168,11 +174,7 @@
               box(width: label-w, height: pill-h,
                 fill: pill-fill, radius: 2pt,
                 align(center + horizon,
-                  text(
-                    size: fit.size,
-                    fill: label-color,
-                    weight: if seg.depth == 1 { "bold" } else { "regular" },
-                  )[#seg.name]))
+                  label-content))
             )
           }
         }

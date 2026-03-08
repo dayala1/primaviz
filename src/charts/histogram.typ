@@ -35,6 +35,8 @@
   density: false,
   x-label: none,
   y-label: none,
+  show-ticks: false,
+  show-minor-grid: false,
   theme: none,
 ) = context {
   layout(size => {
@@ -101,10 +103,10 @@
 
     #box(width: width, height: height)[
       // Grid
-      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t, show-minor-grid: show-minor-grid)
 
       // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t, show-ticks: show-ticks)
 
       // Draw bars (no gaps — contiguous)
       #let bar-w = chart-width / num-bins

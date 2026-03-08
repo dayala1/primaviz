@@ -25,6 +25,8 @@
   palette: "viridis",
   show-legend: true,
   reverse: false,
+  subtitle: none,
+  radius: 0pt,
   theme: none,
 ) = context {
   layout(avail => {
@@ -57,7 +59,7 @@
   let grid-width = n-cols * cell-size
   let grid-height = n-rows * cell-size
 
-  chart-container(row-label-width + grid-width + legend-width + 20pt, col-label-height + grid-height, title, t, extra-height: 40pt)[
+  chart-container(row-label-width + grid-width + legend-width + 20pt, col-label-height + grid-height, title, t, extra-height: 40pt, subtitle: subtitle, radius: radius)[
     #box[
       // Column labels (rotated) — skip when columns are narrow
       #let col-skip = density-skip(n-cols, n-cols * cell-size)

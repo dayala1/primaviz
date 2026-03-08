@@ -33,6 +33,10 @@
   show-grid: auto,
   color: none,
   annotations: none,
+  show-ticks: false,
+  show-minor-grid: false,
+  subtitle: none,
+  radius: 0pt,
   theme: none,
 ) = context {
   layout(size => {
@@ -59,7 +63,7 @@
 
   let cl = cartesian-layout(width, height, t, extra-left: 10pt)
 
-  chart-container(width, height, title, t, extra-height: 30pt)[
+  chart-container(width, height, title, t, extra-height: 30pt, subtitle: subtitle, radius: radius)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -68,10 +72,10 @@
 
     #box(width: width, height: height)[
       // Grid lines
-      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t, show-minor-grid: show-minor-grid)
 
       // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t, show-ticks: show-ticks)
 
       // Y-axis ticks
       #draw-y-ticks(y-min, y-max, chart-height, pad-top, origin-x, t)
@@ -327,15 +331,23 @@
           if fit.fits {
             inside-labels.push((px: b.px, py: b.py, radius: b.radius, lbl: lbl, size: fit.size))
           } else {
-            // Propose label above bubble, quadrant-aware horizontal offset
+            // Propose label position, quadrant-aware horizontal offset
             let chart-cx = (bounds.left + bounds.right) / 2
+            let chart-cy = (bounds.top + bounds.bottom) / 2
             let lbl-w = calc.max(40pt, lbl-size * 0.6 * lbl-len + 4pt)
             let lx = if b.px >= chart-cx {
               b.px + 4pt
             } else {
               b.px - lbl-w - 4pt
             }
-            let ly = b.py - b.radius - lbl-h - 4pt
+            // Place label above or below bubble based on vertical position:
+            // bubbles in the upper half get labels below, lower half get labels above.
+            // This naturally separates labels for vertically-close bubbles.
+            let ly = if b.py <= chart-cy {
+              b.py + b.radius + 4pt                   // below bubble
+            } else {
+              b.py - b.radius - lbl-h - 4pt           // above bubble
+            }
             outside-proposals.push((
               cx: b.px, cy: b.py, radius: b.radius,
               lx: lx, ly: ly, w: lbl-w, h: lbl-h,

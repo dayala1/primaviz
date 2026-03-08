@@ -126,6 +126,10 @@
   x-label: none,
   y-label: none,
   annotations: none,
+  show-ticks: false,
+  show-minor-grid: false,
+  subtitle: none,
+  radius: 0pt,
   theme: none,
 ) = context {
   layout(size => {
@@ -141,7 +145,7 @@
 
   let cl = cartesian-layout(width, height, t)
 
-  chart-container(width, height, title, t, extra-height: 30pt)[
+  chart-container(width, height, title, t, extra-height: 30pt, subtitle: subtitle, radius: radius)[
     #let pad-top = cl.pad-top
     #let chart-height = cl.chart-height
     #let chart-width = cl.chart-width
@@ -150,7 +154,7 @@
 
     #box(width: width, height: height)[
       // Grid
-      #draw-grid(origin-x, pad-top, chart-width, chart-height, t)
+      #draw-grid(origin-x, pad-top, chart-width, chart-height, t, show-minor-grid: show-minor-grid)
 
       // Y-axis ticks
       #draw-y-ticks(0, max-val, chart-height, pad-top, origin-x, t)
@@ -186,7 +190,7 @@
       }
 
       // Axes (drawn after bars so axis lines appear on top)
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, pad-top, t, show-ticks: show-ticks)
 
       // X-axis category labels
       #draw-x-category-labels(labels, origin-x, spacing, origin-y + 4pt, t)
