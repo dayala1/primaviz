@@ -176,9 +176,9 @@
   let empty-fill = if t.background != none { t.background.lighten(15%) } else { t.text-color-light.transparentize(80%) }
   let empty-stroke = 0.5pt + t.text-color-light.transparentize(40%)
 
-  let legend-min-w = 25pt + 5 * (cell-size + 2pt) + 5pt + 25pt  // Less + boxes + More
+  let legend-total-w = 25pt + 5 * (cell-size + 2pt) + 5pt + 25pt  // Less + boxes + More
   let grid-w = n-weeks * cell-size
-  let body-w = day-label-width + calc.max(grid-w, legend-min-w) + 20pt
+  let body-w = day-label-width + grid-w
   align(center, chart-container(body-w, month-label-height + 7 * cell-size, title, t, extra-height: 40pt)[
     #box(width: body-w)[
       // Month labels along the top (x-axis) — skip labels that would overlap
@@ -285,7 +285,6 @@
 
       // Legend — centered under the grid
       #let legend-y = month-label-height + 7 * cell-size + 10pt
-      #let legend-total-w = 25pt + 5 * (cell-size + 2pt) + 5pt + 25pt  // Less + boxes + More
       #let grid-width = n-weeks * cell-size
       #let legend-start = day-label-width + calc.max(0pt, (grid-width - legend-total-w) / 2)
       #place(left + top, dx: legend-start, dy: legend-y, text(size: t.axis-label-size * 0.85, fill: t.text-color)[Less])

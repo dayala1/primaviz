@@ -2,8 +2,8 @@
 #import "../src/lib.typ": *
 #import "demo-data.typ": sales, codebase, league, rpg, words
 
-#set page(margin: (x: 0.6cm, y: 0.6cm), paper: "a4", fill: rgb("#1a1a2e"))
-#set text(size: 7pt, fill: rgb("#e0e0e0"))
+#set page(margin: (x: 0.6cm, y: 0.6cm), paper: "a4", fill: themes.dark.background)
+#set text(size: 7pt, fill: themes.dark.text-color)
 
 #let dk = themes.dark
 #let gk = (..dk, title-size: 7pt)
@@ -119,8 +119,8 @@
     #grid(
       columns: (1fr, 1fr, 1fr),
       circular-progress(rpg.quest-completion, size: 50pt, title: "Quest", theme: dk),
-      circular-progress(rpg.xp-progress, size: 50pt, title: "XP", color: rgb("#ff6b6b"), theme: dk),
-      circular-progress(rpg.party-health, size: 50pt, title: "Health", color: rgb("#0be881"), theme: dk),
+      circular-progress(rpg.xp-progress, size: 50pt, title: "XP", color: get-color(dk, 1), theme: dk),
+      circular-progress(rpg.party-health, size: 50pt, title: "Health", color: get-color(dk, 4), theme: dk),
     )
   ],
 
@@ -180,20 +180,25 @@
 
   // 27. sparklines — Sales: server metrics
   [
+    #let c0 = get-color(dk, 0)
+    #let c1 = get-color(dk, 1)
+    #let c2 = get-color(dk, 5)
+    #let sw = 50pt
+    #let sh = 12pt
     #v(10pt)
     #align(center, text(size: dk.title-size, weight: dk.title-weight, fill: dk.text-color)[sparkline · sparkbar · sparkdot])
     #v(2pt)
-    #table(
+    #align(center, table(
       columns: (auto, auto, auto, auto),
       align: (left, center, center, center),
       inset: 3pt,
-      stroke: rgb("#333355"),
-      fill: rgb("#1a1a2e"),
+      stroke: dk.grid-stroke,
+      fill: dk.background,
       [*Metric*], [*sparkline*], [*sparkbar*], [*sparkdot*],
-      [Networking], [#sparkline(sales.sparklines.networking, color: rgb("#00d2ff"), width: 50pt, height: 12pt)], [#sparkbar(sales.sparklines.networking, color: rgb("#ff9f43"), width: 50pt, height: 12pt)], [#sparkdot(sales.sparklines.networking, color: rgb("#ff6b6b"), width: 50pt, height: 12pt)],
-      [Memory], [#sparkline(sales.sparklines.memory, color: rgb("#00d2ff"), width: 50pt, height: 12pt)], [#sparkbar(sales.sparklines.memory, color: rgb("#ff9f43"), width: 50pt, height: 12pt)], [#sparkdot(sales.sparklines.memory, color: rgb("#0be881"), width: 50pt, height: 12pt)],
-      [Storage], [#sparkline(sales.sparklines.storage, color: rgb("#00d2ff"), width: 50pt, height: 12pt)], [#sparkbar(sales.sparklines.storage, color: rgb("#ff9f43"), width: 50pt, height: 12pt)], [#sparkdot(sales.sparklines.storage, color: rgb("#0be881"), width: 50pt, height: 12pt)],
-    )
+      [Networking], [#sparkline(sales.sparklines.networking, color: c0, width: sw, height: sh)], [#sparkbar(sales.sparklines.networking, color: c2, width: sw, height: sh)], [#sparkdot(sales.sparklines.networking, color: c1, width: sw, height: sh)],
+      [Memory], [#sparkline(sales.sparklines.memory, color: c0, width: sw, height: sh)], [#sparkbar(sales.sparklines.memory, color: c2, width: sw, height: sh)], [#sparkdot(sales.sparklines.memory, color: c1, width: sw, height: sh)],
+      [Storage], [#sparkline(sales.sparklines.storage, color: c0, width: sw, height: sh)], [#sparkbar(sales.sparklines.storage, color: c2, width: sw, height: sh)], [#sparkdot(sales.sparklines.storage, color: c1, width: sw, height: sh)],
+    ))
   ],
 
   // 28. treemap — League: squad value by team
