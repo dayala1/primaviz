@@ -9,7 +9,7 @@ A charting library for [Typst](https://github.com/typst/typst) built entirely wi
 
 ## Gallery
 
-All 50+ chart types across 7 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
+All 50+ chart types across 8 pages — see [`examples/showcase.typ`](examples/showcase.typ) for the source:
 
 ![Showcase Page 1](screenshots/showcase/showcase-1.png)
 ![Showcase Page 2](screenshots/showcase/showcase-2.png)
@@ -18,13 +18,14 @@ All 50+ chart types across 7 pages — see [`examples/showcase.typ`](examples/sh
 ![Showcase Page 5](screenshots/showcase/showcase-5.png)
 ![Showcase Page 6](screenshots/showcase/showcase-6.png)
 ![Showcase Page 7](screenshots/showcase/showcase-7.png)
+![Showcase Page 8](screenshots/showcase/showcase-8.png)
 
 ## Examples
 
 | File | Description |
 |---|---|
 | [`examples/demos/`](examples/demos/) | 19 per-chart demo files, each a 2×2 grid (light/dark + variations) |
-| [`examples/showcase.typ`](examples/showcase.typ) | Compact 7-page showcase of all chart types (dark theme) |
+| [`examples/showcase.typ`](examples/showcase.typ) | Compact 8-page showcase of all chart types (dark theme) |
 | [`examples/demo.typ`](examples/demo.typ) | Comprehensive demo with all features, themes, and data loading |
 
 Shared datasets in [`data/`](data/) used by both demo and showcase:
@@ -49,7 +50,7 @@ just demo       # Compile the comprehensive demo
 - **Layout primitives** — shared utilities for label density, font scaling, and label placement
 - **Annotations** — overlay reference lines, bands, and labels on Cartesian charts
 - **Relative widths** — use `width: 100%` for responsive charts inside containers and grids
-- **Dashboard primitives** — `card()` and `compact-table()` for report layouts
+- **Dashboard primitives** — `card`, `compact-table`, `alert`, `badge`, `separator`, and `dashboard-layout` for report layouts
 - **Customizable** — colors, sizes, labels, legends
 - **Pure Typst** — no packages or external tools needed
 
@@ -375,7 +376,7 @@ primaviz/
       wordcloud.typ          # spiral-placement word cloud
     primitives/              # Low-level drawing helpers
       axes.typ               # axis lines, ticks, labels, grid, cartesian-layout
-      layout.typ             # density-skip, font-for-space, page-grid, label placement, deconfliction
+      layout.typ             # resolve-size, density-skip, font-for-space, page-grid, label placement, deconfliction
       annotations.typ        # reference lines, bands, labels
       container.typ          # chart container wrapper
       legend.typ             # horizontal, vertical, draw-legend-auto
@@ -408,6 +409,8 @@ primaviz/
   screenshots/
     demo/                    # Per-chart demo screenshots (demo-*.png)
     showcase/                # Showcase page screenshots (showcase-*.png)
+  scripts/
+    extract-theme.py         # CSS → JSON token extractor (uv script)
   justfile                   # Common dev commands
 ```
 
@@ -428,6 +431,7 @@ just open            # Compile and open the demo PDF
 just dev             # Watch with live-reload and open PDF
 just clean           # Clean generated artifacts
 just release         # Full release prep (check + screenshots)
+just extract-theme   # Extract CSS tokens → JSON theme (e.g., just extract-theme src/index.css)
 just stats           # Show project stats
 ```
 
