@@ -3,7 +3,7 @@
 #import "../util.typ": normalize-data
 #import "../primitives/layout.typ": font-for-space, try-fit-label, resolve-size
 #import "../validate.typ": validate-simple-data
-#import "../primitives/container.typ": chart-container
+#import "../primitives/container.typ": chart-container, container-inset
 #import "../primitives/legend.typ": draw-legend-vertical
 #import "../primitives/polar.typ": pie-slice-points, place-donut-hole, separator-stroke
 
@@ -47,8 +47,8 @@
   let legend-width = if not show-legend { 0pt } else if size < 120pt { calc.max(100pt, calc.min(150pt, n * 18pt + 30pt)) } else { calc.max(130pt, calc.min(180pt, n * 20pt + 40pt)) }
 
   // Total width: pie + gap + legend — clamp to available width
-  // Subtract container inset (2×8pt) since chart-container adds it to the outer box
-  let container-inset = 16pt
+  // Subtract container inset (2×padding) since chart-container adds it to the outer box
+  let container-inset = 2 * container-inset
   let avail-w = if type(avail.width) == length and avail.width > 0pt { avail.width } else { none }
   let total-width = size + legend-gap + legend-width
   if avail-w != none and total-width + container-inset > avail-w {

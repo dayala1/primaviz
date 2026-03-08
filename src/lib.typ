@@ -39,4 +39,4 @@
 #import "util.typ": sort-data, top-n, aggregate, percent-of-total
 #import "data.typ": load-simple, load-series, load-scatter, load-bubble, load-hierarchy
 #import "primitives/layout.typ": page-grid, resolve-size
-#import "primitives/legend.typ": draw-legend, draw-legend-vertical, draw-legend-auto, draw-gradient-legend, draw-size-legend
+#import "primitives/legend.typ": draw-gradient-legend, draw-size-legend

@@ -1,7 +1,7 @@
 // radar.typ - Radar/spider charts
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../validate.typ": validate-series-data
-#import "../primitives/container.typ": chart-container
+#import "../primitives/container.typ": chart-container, container-inset
 #import "../primitives/legend.typ": draw-legend-vertical
 #import "../primitives/layout.typ": font-for-space, resolve-size
 
@@ -43,7 +43,7 @@
   let legend-width = if show-legend and series.len() > 1 { calc.min(80pt, size * 0.4) } else { 0pt }
 
   // Shrink legend then chart if total width exceeds available space
-  let container-inset = 16pt
+  let container-inset = 2 * container-inset
   let avail-w = if type(avail.width) == length and avail.width > 0pt { avail.width } else { none }
   let total-width = size + legend-width
   if avail-w != none and total-width + container-inset > avail-w {

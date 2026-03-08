@@ -61,11 +61,15 @@
     ])
   }
 
-  let radius = size / 2
+  // Reserve margin for labels so they don't get clipped at the edges.
+  // Labels sit 12pt outside the outer arc in a ~4em box; reserve enough
+  // space on each side for the label offset plus half the box width.
+  let label-margin = if show-labels { 40pt } else { 0pt }
+  let radius = (size - 2 * label-margin) / 2
   let outer-r = radius - 2pt          // outer edge of arcs
   let inner-r = outer-r - arc-width   // inner edge of arcs (chord attachment)
-  let center-x = radius
-  let center-y = radius
+  let center-x = size / 2
+  let center-y = size / 2
 
   // ── Compute arc spans in degrees ─────────────────────────────────────
   let total-gap = gap * n             // total degrees consumed by gaps

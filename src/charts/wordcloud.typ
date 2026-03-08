@@ -52,16 +52,6 @@
   // Font weight alternation for visual variety
   let font-weights = ("bold", "regular", "bold", "medium", "regular")
 
-  // Resolve relative lengths (e.g. 100%) via layout()
-  if type(width) != length or type(height) != length {
-    return layout(size => {
-      let abs-w = if type(width) == length { width } else { size.width }
-      let abs-h = if type(height) == length { height } else { size.height }
-      word-cloud(data, width: abs-w, height: abs-h, min-size: min-size, max-size: max-size,
-        title: title, padding: padding, shape: shape, theme: theme)
-    })
-  }
-
   let inner-w = width - 2 * padding
   let inner-h = height - 2 * padding
   let cx = inner-w / 2

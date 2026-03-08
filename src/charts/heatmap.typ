@@ -303,12 +303,15 @@
   ])
 }
 
-/// Renders a correlation matrix as a symmetric heatmap (blue to red for -1 to +1).
+/// Renders a correlation matrix as a symmetric heatmap with configurable palette.
 ///
 /// - data (dictionary): Dict with `labels` and `values` (2D symmetric array, -1 to 1 range)
 /// - cell-size (length): Width and height of each cell
 /// - title (none, content): Optional chart title
 /// - show-values (bool): Display correlation values inside cells
+/// - palette (str, array): Color palette name or array of color stops. Append `"-r"` to reverse named palettes.
+/// - show-legend (bool): Show color scale legend
+/// - reverse (bool): Reverse palette direction
 /// - theme (none, dictionary): Theme overrides
 /// -> content
 #let correlation-matrix(
@@ -316,6 +319,9 @@
   cell-size: 35pt,
   title: none,
   show-values: true,
+  palette: "coolwarm",
+  show-legend: true,
+  reverse: false,
   theme: none,
 ) = context {
   layout(avail => {
@@ -326,25 +332,19 @@
   let n = labels.len()
 
   let label-area = 50pt
+  let legend-width = if show-legend { 40pt } else { 0pt }
 
   // Shrink cell-size if total width exceeds available space
-  let overhead = label-area + 20pt + 2 * container-inset
+  let overhead = label-area + legend-width + 20pt + 2 * container-inset
   let avail-w = if type(avail.width) == length and avail.width > 0pt { avail.width } else { none }
   let cell-size = if avail-w != none and n * cell-size + overhead > avail-w {
     (avail-w - overhead) / n
   } else { cell-size }
 
-  // Correlation color: blue (-1) -> white (0) -> red (+1)
-  let corr-color(val) = {
-    let v = calc.max(-1, calc.min(1, val))
-    if v < 0 {
-      lerp-color(rgb("#2166ac"), white, (v + 1))
-    } else {
-      lerp-color(white, rgb("#b2182b"), v)
-    }
-  }
+  let grid-width = n * cell-size
+  let grid-height = n * cell-size
 
-  chart-container(label-area + n * cell-size + 20pt, label-area + n * cell-size, title, t, extra-height: 40pt)[
+  chart-container(label-area + grid-width + legend-width + 20pt, label-area + grid-height, title, t, extra-height: 40pt)[
     #box[
       // Column labels — skip when columns are narrow
       #let col-skip = density-skip(n, n * cell-size)
@@ -373,7 +373,9 @@
 
         // Cells
         for (j, val) in values.at(i).enumerate() {
-          let cell-color = corr-color(val)
+          // Map correlation range [-1, +1] to normalized [0, 1] for heat-color
+          let normalized = (calc.max(-1, calc.min(1, val)) + 1) / 2
+          let cell-color = heat-color(normalized, palette: palette, reverse: reverse)
           let cell-stroke = if t.background != none { t.background + 0.5pt } else { white + 0.5pt }
 
           place(
@@ -389,9 +391,7 @@
           )
 
           if show-values {
-            // Cell backgrounds are always white-based (blue-white-red), so use
-            // fixed dark/light text regardless of theme to ensure contrast
-            let text-color = if calc.abs(val) > 0.5 { white } else { black }
+            let text-color = contrast-text(cell-color)
             place(
               left + top,
               dx: label-area + j * cell-size,
@@ -402,6 +402,15 @@
             )
           }
         }
+      }
+
+      // Color legend
+      #if show-legend {
+        let legend-x = label-area + grid-width + 15pt
+        let legend-height = grid-height * 0.8
+        let legend-y = label-area + (grid-height - legend-height) / 2
+        place(left + top, dx: legend-x, dy: legend-y,
+          draw-gradient-legend(-1, 1, palette, t, bar-height: legend-height, reverse: reverse))
       }
     ]
   ]

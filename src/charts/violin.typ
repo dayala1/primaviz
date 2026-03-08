@@ -171,7 +171,7 @@
       #draw-grid(origin-x, y-start, chart-width, chart-height, t)
 
       // Axes
-      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, y-start, t, show-ticks: true)
+      #draw-axis-lines(origin-x, origin-y, origin-x + chart-width, y-start, t)
 
       // Y-axis ticks
       #draw-y-ticks(y-min, y-max, chart-height, y-start, origin-x, t, digits: 1)

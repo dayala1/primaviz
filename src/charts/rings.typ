@@ -1,7 +1,7 @@
 // rings.typ - Donut progress / fitness rings chart (Apple Watch style)
 #import "../theme.typ": _resolve-ctx, get-color
 #import "../validate.typ": validate-ring-data
-#import "../primitives/container.typ": chart-container
+#import "../primitives/container.typ": chart-container, container-inset
 #import "../primitives/layout.typ": resolve-size
 
 /// Concentric ring progress chart (fitness rings).
@@ -30,7 +30,7 @@
   let margin = ring-width / 2 + 2pt
 
   // Shrink if total width exceeds available space
-  let container-inset = 16pt
+  let container-inset = 2 * container-inset
   let avail-w = if type(avail.width) == length and avail.width > 0pt { avail.width } else { none }
   let total-w = size + margin * 2 + label-col-width
   if avail-w != none and total-w + container-inset > avail-w {
