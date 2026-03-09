@@ -62,7 +62,7 @@
   let show-legend = left-label != none and right-label != none
   let extra-h = if show-legend { 50pt } else { 30pt }
 
-  let tick-area = 18pt  // Reserve space below bars for tick labels
+  let tick-area = t.axis-label-size * 2 + t.axis-label-gap
   let legend-content = draw-legend-auto(
     ((name: left-label, color: get-color(t, 0)), (name: right-label, color: get-color(t, 1))),
     t, show-legend: show-legend,

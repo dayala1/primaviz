@@ -248,7 +248,8 @@
 /// - val (int, float): Value to round down
 /// -> int, float
 #let nice-floor(val) = {
-  if val <= 0 { return 0 }
+  if val == 0 { return 0 }
+  if val < 0 { return -nice-ceil(calc.abs(val)) }
   let exp = calc.floor(calc.log(val, base: 10))
   let base = calc.pow(10, exp)
   let frac = val / base

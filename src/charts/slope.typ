@@ -56,9 +56,8 @@
   let bottom-pad = 10pt
 
   chart-container(width, height, title, t, extra-height: 20pt)[
-    #let chart-height = height - 10pt
-
-    #box(width: width, height: chart-height)[
+    #box(width: width, height: height)[
+      #let chart-height = height
       // Column headers — centered over each axis
       #place(left + top,
         dx: 0pt,

@@ -206,23 +206,23 @@
     #align(center)[
       #box(baseline: 2pt, rect(width: 12pt, height: 6pt, fill: bar-color, stroke: none))
       #h(2pt)
-      #text(size: t.legend-size * 0.75, fill: t.text-color)[Actual]
+      #text(size: t.axis-label-size, fill: t.text-color)[Actual]
       #h(8pt)
       #box(baseline: 2pt, rect(width: 2.5pt, height: 10pt, fill: t.text-color, stroke: none))
       #h(2pt)
-      #text(size: t.legend-size * 0.75, fill: t.text-color)[Target]
+      #text(size: t.axis-label-size, fill: t.text-color)[Target]
       #h(8pt)
       #box(baseline: 2pt, rect(width: 10pt, height: 8pt, fill: range-fills.at(0), stroke: none))
       #h(2pt)
-      #text(size: t.legend-size * 0.75, fill: t.text-color)[Poor]
+      #text(size: t.axis-label-size, fill: t.text-color)[Poor]
       #h(6pt)
       #box(baseline: 2pt, rect(width: 10pt, height: 8pt, fill: range-fills.at(1), stroke: none))
       #h(2pt)
-      #text(size: t.legend-size * 0.75, fill: t.text-color)[Fair]
+      #text(size: t.axis-label-size, fill: t.text-color)[Fair]
       #h(6pt)
       #box(baseline: 2pt, rect(width: 10pt, height: 8pt, fill: range-fills.at(2), stroke: none))
       #h(2pt)
-      #text(size: t.legend-size * 0.75, fill: t.text-color)[Good]
+      #text(size: t.axis-label-size, fill: t.text-color)[Good]
     ]
   ]
   })

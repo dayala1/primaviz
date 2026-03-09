@@ -22,16 +22,17 @@
     fill: fill,
     radius: t.border-radius,
   )[
+    #let pad = t.axis-label-gap
     #if title != none {
-      box(inset: (x: 8pt, top: 7pt, bottom: 0pt), width: 100%)[
+      box(inset: (x: pad, top: pad, bottom: 0pt), width: 100%)[
         #text(size: t.axis-title-size, weight: "bold", fill: t.text-color, title)
         #if desc != none {
-          h(6pt)
+          h(pad)
           text(size: t.axis-label-size, fill: muted, desc)
         }
       ]
     }
-    #box(inset: (x: 8pt, top: 5pt, bottom: 7pt), width: 100%, body)
+    #box(inset: (x: pad, top: pad * 0.8, bottom: pad), width: 100%, body)
   ]
 }
 
@@ -56,7 +57,7 @@
     columns: cols,
     align: (left, ..range(headers.len() - 1).map(_ => right)),
     stroke: stroke,
-    inset: (x: 5pt, y: 3.5pt),
+    inset: (x: t.axis-label-gap * 0.8, y: t.axis-label-gap * 0.6),
     fill: (_, row) => if row == 0 { header-fill } else if calc.rem(row, 2) == 0 { alt-fill } else { fill },
     ..headers.map(h => text(size: t.axis-label-size, weight: "bold", fill: t.text-color-inverse, upper(h))),
     ..rows.flatten().enumerate().map(((i, cell)) => {
@@ -100,7 +101,7 @@
     width: 100%,
     fill: bg,
     stroke: (left: 2.5pt + accent),
-    inset: (x: 8pt, y: 6pt),
+    inset: (x: t.axis-label-gap, y: t.axis-label-gap),
   )[
     #if title != none {
       text(size: t.axis-title-size, weight: "bold", fill: accent)[#vr.icon #h(3pt) #title]
@@ -136,7 +137,7 @@
   box(
     fill: s.bg,
     stroke: if variant == "outline" { if t.border != none { t.border } else { 0.5pt + t.text-color-light } } else { none },
-    inset: (x: 4pt, y: 1.5pt),
+    inset: (x: t.axis-label-gap * 0.7, y: t.axis-label-gap * 0.25),
     radius: t.border-radius,
     text(size: t.axis-label-size * 0.85, weight: "bold", fill: s.fg, upper(label)),
   )

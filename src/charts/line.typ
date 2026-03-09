@@ -1,6 +1,6 @@
 // line.typ - Line charts (single and multi-series)
 #import "../theme.typ": _resolve-ctx, get-color
-#import "../util.typ": normalize-data, nonzero, nice-ceil
+#import "../util.typ": normalize-data, nonzero, nice-ceil, nice-floor
 #import "../validate.typ": validate-simple-data, validate-series-data
 #import "../primitives/container.typ": chart-container
 #import "../primitives/axes.typ": cartesian-layout, draw-axis-lines, draw-grid, draw-axis-titles, draw-y-ticks, draw-x-category-labels, draw-x-even-labels, measure-y-tick-width
@@ -52,7 +52,7 @@
   let values = norm.values
 
   let max-val = nice-ceil(calc.max(..values))
-  let min-val = calc.min(..values)
+  let min-val = nice-floor(calc.min(..values))
   let val-range = nonzero(max-val - min-val)
 
   let n = values.len()
@@ -167,7 +167,7 @@
 
   let all-values = series.map(s => s.values).flatten()
   let max-val = nice-ceil(calc.max(..all-values))
-  let min-val = calc.min(..all-values)
+  let min-val = nice-floor(calc.min(..all-values))
   let val-range = nonzero(max-val - min-val)
 
   let n = labels.len()

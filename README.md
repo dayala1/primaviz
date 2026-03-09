@@ -45,7 +45,7 @@ just demo       # Compile the comprehensive demo
 
 - **50+ chart types** for data visualization
 - **JSON data input** — load data directly from JSON files
-- **Theme system** — preset themes, custom overrides, and `with-theme()` for document-wide defaults
+- **Theme system** — golden-ratio proportional scaling from two seeds (`base-size`, `base-gap`), preset themes, custom overrides, and `with-theme()` for document-wide defaults
 - **Smart label placement** — automatic fit detection, font shrinking, and greedy deconfliction for overlapping labels
 - **Layout primitives** — shared utilities for label density, font scaling, and label placement
 - **Annotations** — overlay reference lines, bands, and labels on Cartesian charts
@@ -223,6 +223,15 @@ Use `with-theme()` to set a default theme for all charts in a block — no need 
 
 // Or as a show rule for the entire document
 #show: with-theme.with(themes.dark)
+```
+
+### Scaling with seeds
+
+All font sizes and spacing are derived from two seed values via golden-ratio (φ = 1.618) powers. Change the seeds to scale everything proportionally:
+
+```typst
+#bar-chart(data, theme: (base-size: 10pt, base-gap: 8pt))  // larger text and spacing
+#bar-chart(data, theme: (base-size: 5pt, base-gap: 3pt))   // compact
 ```
 
 ### Custom overrides

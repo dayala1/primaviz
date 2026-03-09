@@ -83,9 +83,8 @@
   let legend-content = draw-legend-auto(legend-entries, t, swatch-type: "circle")
 
   chart-container(width, height, title, t, extra-height: 30pt, legend: legend-content)[
-    #let chart-height = height - 10pt
-
-    #box(width: width, height: chart-height)[
+    #box(width: width, height: height)[
+      #let chart-height = height
       // Usable vertical space for rows — extra slot keeps last row off the axis
       #let usable-height = chart-height - top-pad - bottom-pad
       #let row-height = usable-height / (n + 0.5)
