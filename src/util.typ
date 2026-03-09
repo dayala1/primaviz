@@ -264,6 +264,28 @@
   nice * base
 }
 
+/// Computes nice step-aligned tick values for an axis.
+/// Returns a dictionary with `min`, `max`, `step`, and `ticks` (array of values).
+///
+/// - data-min (number): Minimum data value
+/// - data-max (number): Maximum data value
+/// - count (int): Desired number of tick intervals (not tick count)
+/// -> dictionary
+#let nice-ticks(data-min, data-max, count: 5) = {
+  let raw-range = nonzero(data-max - data-min, fallback: 1.0)
+  let raw-step = raw-range / count
+  let step = nice-ceil(raw-step)
+  let tick-min = calc.floor(data-min / step) * step
+  let tick-max = calc.ceil(data-max / step) * step
+  let ticks = ()
+  let v = tick-min
+  while v <= tick-max + step * 0.01 {
+    ticks.push(if v == calc.floor(v) { int(v) } else { calc.round(v, digits: 2) })
+    v += step
+  }
+  (min: tick-min, max: tick-max, step: step, ticks: ticks)
+}
+
 /// Computes nice-rounded (min, max, range) for a numeric array.
 /// Returns a dictionary with `min`, `max`, and `range` (nonzero-guarded) keys.
 ///
