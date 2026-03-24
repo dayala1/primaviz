@@ -240,7 +240,6 @@
   }
   max-h
 }
-
 // Draw axis title labels (x below axis, y rotated on left).
 //
 // Layout is measurement-based:
@@ -268,10 +267,10 @@
     let lbl-content = text(size: theme.axis-title-size, fill: theme.text-color)[#x-label]
     let lbl-size = measure(lbl-content)
     // Position below x-tick labels: measure actual tick label height + small gap
-    let tick-h = if x-tick-height != none { x-tick-height } else {
+    let tick-h = if x-tick-height != none { x-tick-height * 1.4 } else {
       measure(text(size: theme.axis-label-size)[0]).height * 1.4
     }
-    let x-title-dy = ax-origin-y + gap * 0.75 + tick-h
+    let x-title-dy = ax-origin-y + gap * .75 + tick-h
     place(left + top, dx: x-center - lbl-size.width / 2, dy: x-title-dy,
       lbl-content
     )
